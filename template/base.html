@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A premium admin dashboard template by Master" name="description"/>
+    <meta content="Master" name="author"/>
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico">
+    <title>{{template "title" .}}</title>
+    <!--Morris Chart CSS -->
+    {{CSS "assets/plugins/morris/morris.css"}}
+
+    <title>{{template "cssextra" .}}</title>
+
+    {{CSS "assets/plugins/sweet-alert2/sweetalert2.min.css"}}
+    {{CSS "assets/plugins/animate/animate.css"}}
+    <!-- App css -->
+    {{CSS "assets/css/bootstrap.min.css"}}
+    {{CSS "assets/css/icons.css"}}
+    {{CSS "assets/css/metisMenu.min.css"}}
+    {{CSS "assets/css/style.css"}}
+
+</head>
+<body>
+
+
+{{range $fm := .flashes}}
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            {{if eq .Class "error"}}
+            Swal.fire(
+                'Oops',
+                '{{.Message}}',
+                'question'
+            );
+            {{end}}
+            {{if eq .Class "success"}}
+            Swal.fire(
+                'Well Done!',
+                '{{.Message}}',
+                'success'
+            );
+            {{end}}
+
+            {{if eq .Class "warning"}}
+            Swal.fire(
+                'warning!',
+                '{{.Message}}',
+                'warning'
+            );
+            {{end}}
+
+            {{if eq .Class "info"}}
+            Swal.fire(
+                'info!',
+                '{{.Message}}',
+                'info'
+            );
+            {{end}}
+        });
+    </script>
+
+{{end}}
+
+
+{{template "content" .}}
+
+{{template "footer" .}}
+
+{{JS "assets/js/jquery.min.js"}}
+{{JS "assets/js/bootstrap.bundle.min.js"}}
+{{JS "assets/js/metisMenu.min.js"}}
+{{JS "assets/js/waves.min.js"}}
+{{JS "assets/js/jquery.slimscroll.min.js"}}
+
+{{JS "assets/plugins/sweet-alert2/sweetalert2.min.js"}}
+{{JS "assets/pages/jquery.sweet-alert.init.js"}}
+
+<!-- App js -->
+{{JS "assets/js/jquery.core.js"}}
+{{JS "assets/js/app.js"}}
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+{{JS "assets/firbasejs/firbase_config.js"}}
+
+</body>
+</html>

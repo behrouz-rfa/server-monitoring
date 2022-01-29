@@ -1,0 +1,252 @@
+{{define "title"}}Go Web App{{end}}
+{{define "cssextra"}}
+    <!-- DataTables -->
+    {{CSS "assets/plugins/datatables/dataTables.bootstrap4.min.css"}}
+    {{CSS "assets/plugins/datatables/buttons.bootstrap4.min.css"}}
+
+{{end}}
+{{define "extrajs"}}
+    <!-- Required datatable js -->
+    {{JS "assets/plugins/datatables/jquery.dataTables.min.js"}}
+    {{JS "assets/plugins/datatables/dataTables.bootstrap4.min.js"}}
+    {{JS "assets/plugins/repeater/jquery.repeater.min.js"}}
+
+{{end}}
+{{define "content"}}
+
+    {{$currentPage := .paginate.CurrentPage}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Ecommerce</a></li>
+                            <li class="breadcrumb-item active">Product List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Product List</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+
+        <!-- end page title end breadcrumb -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h4 class="mt-0 header-title">{{gettext "Orders"}}</h4>
+                        <p class="text-muted mb-4 font-13">
+                            {{gettext "Available all orders."}}
+                        </p>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_length" id="datatable_length"><label>{{gettext "Show"}} <select
+                                                name="datatable_length" aria-controls="datatable"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries</label></div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div id="datatable_filter" class="dataTables_filter"><label>{{gettext "Search:"}}
+                                        <input type="search"
+                                               class="form-control form-control-sm"
+                                               placeholder=""
+                                               aria-controls="datatable">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                       style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>{{gettext "Product Name"}}</th>
+                                        <th>{{gettext "Full Name"}}</th>
+                                        <th>{{gettext "Count"}}</th>
+                                        <th>{{gettext "Price"}}</th>
+                                        <th>{{gettext "Status"}}</th>
+                                        <th>Avai.Color</th>
+                                        <th>{{gettext "Action"}}</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    {{range $item := .paginate.Items}}
+                                        <tr>
+                                            <td>
+                                                <img src="../assets/images/products/img-2.png" alt="" height="52">
+                                                <p class="d-inline-block align-middle mb-0">
+                                                    <a href=""
+                                                       class="d-inline-block align-middle mb-0 product-name">{{$item.Product.Title}}</a>
+                                                    <br>
+                                                    <span class="text-muted font-13">{{$item.Product.CreatedAt}}</span>
+                                                </p>
+                                            </td>
+                                            <td>{{$item.User.Email}}</td>
+                                            <td>{{$item.Order.Count}}</td>
+                                            <td>{{$item.Product.Price}}</td>
+                                            <td>
+                                                {{if eq $item.Payment.IsPayed 0}}
+                                                    <span class="badge badge-soft-danger">
+                                                    {{gettext "unpaid"}}
+                                                    </span>
+                                                {{else if eq $item.Payment.Status 0}}
+                                                    <span class="badge badge-soft-blue">
+                                                              {{gettext "In Progress"}}
+                                                    </span>
+
+                                                {{else}}
+                                                    <span class="badge badge-soft-success">
+                                                    {{gettext "Deliverd"}}
+                                                           </span>
+                                                {{end}}
+
+                                            </td>
+                                            <td>
+                                                <ul class="list-inline mb-0">
+                                                    <li class="list-inline-item align-middle"><i
+                                                                class="fas fa-circle text-success"></i></li>
+                                                    <li class="list-inline-item align-middle"><i
+                                                                class="fas fa-circle text-danger"></i></li>
+                                                    <li class="list-inline-item align-middle"><i
+                                                                class="fas fa-circle text-info"></i></li>
+                                                    <li class="list-inline-item align-middle"><i
+                                                                class="fas fa-circle text-dark"></i></li>
+                                                    <li class="list-inline-item align-middle"><i
+                                                                class="fas fa-circle text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td>
+
+
+                                                  <span data-repeater-delete=""
+                                                        onclick="loadItem({{$item.Order.Id}},{{$currentPage}})"
+                                                        class="btn btn-danger btn-sm">
+                                                      <span class="far fa-trash-alt mr-1"></span>
+                                                  </span>
+
+
+                                            </td>
+                                        </tr>
+                                    {{end}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {{if ge .paginate.Pages 1}}
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+                                        Page {{.paginate.CurrentPage}} of {{.paginate.Count}} entries
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                                        <ul class="pagination">
+                                            {{if .paginate.Previous}}
+                                                <li class="paginate_button page-item previous "
+                                                    id="datatable_previous">
+                                                    <a href="?page={{sub .paginate.CurrentPage}}"
+                                                       aria-controls="datatable" data-dt-idx="0" tabindex="0"
+                                                       class="page-link">{{gettext "Previous"}}</a></li>
+                                            {{end}}
+                                            {{$cp :=.paginate.CurrentPage}}
+                                            {{$lastPage := .paginate.LastPage}}
+                                            {{if  .paginate.ShowPerRow}}
+                                                <li class="paginate_button page-item {{if eq 1  $cp}}active{{end}}">
+                                                    <a href="?page=1"
+                                                       aria-controls="datatable"
+                                                       data-dt-idx="1" tabindex="0"
+                                                       class="page-link">1</a></li>
+
+
+                                                {{ range $i,$val :=   .paginate.PagesList }}
+
+                                                    <li class="paginate_button page-item {{if eq $val  $cp}}active{{end}}">
+                                                        <a href="?page={{$val}}"
+                                                           aria-controls="datatable"
+                                                           data-dt-idx="1" tabindex="0"
+                                                           class="page-link">{{$val}}</a></li>
+                                                {{end}}
+
+                                                <li class="paginate_button page-item {{if eq .paginate.Pages  $cp}}active{{end}}">
+                                                    <a href="?page={{.paginate.Pages}}"
+                                                       aria-controls="datatable"
+                                                       data-dt-idx="1" tabindex="0"
+                                                       class="page-link">{{.paginate.Pages}}</a></li>
+                                            {{else}}
+                                                {{ range $i,$val :=  RN .paginate.Pages }}
+
+                                                    <li class="paginate_button page-item {{if eq $val  $cp}}active{{end}}">
+                                                        <a href="?page={{$val}}"
+                                                           aria-controls="datatable"
+                                                           data-dt-idx="1" tabindex="0"
+                                                           class="page-link">{{$val}}</a></li>
+                                                {{end}}
+                                            {{end}}
+                                            {{if .paginate.Next}}
+
+                                                <li class="paginate_button page-item next " id="datatable_next">
+                                                    <a
+                                                            href="?page={{add $cp}}" aria-controls="datatable"
+                                                            data-dt-idx="2"
+                                                            tabindex="0"
+                                                            class="page-link">{{gettext "Next"}}</a></li>
+                                            {{end}}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {{end}}
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+
+    </div><!-- container -->
+
+
+    <script>
+
+        function loadItem(i, p) {
+
+            if (confirm({{gettext "Are you sure you want to remove this item?"}})) {
+                window.open('/admin/order/delete/' + i + '/' + p,"_self");
+            }
+        }
+
+        function sendAjaxRequest(i,p) {
+            var xhr = new XMLHttpRequest();
+            // type (eg POST, GET, etc), and api endpoint
+            xhr.open('GET', '/admin/order/delete/' + i + '/' + p);
+            // tell it you're sending json
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            // call this function on load
+            xhr.onload = function () {
+                // if it was successful
+                if (xhr.status === 200) {
+                    // parse the response into json
+                    // var userInfo = JSON.parse(xhr.responseText);
+                    // use the json to change your apps UI
+                    //  document.getElementById("footer").innerHTML = userInfo.error;
+                }
+            };
+            xhr.send(JSON.stringify({
+                // user info here
+                error: "nil"
+            }));
+        }
+
+    </script>
+
+{{end}}

@@ -1,0 +1,231 @@
+{{define "title"}}Category{{end}}
+{{define "cssextra"}}
+    {{CSS "assets/plugins/RWD-Table-Patterns/dist/css/rwd-table.min.css"}}
+    {{CSS "assets/plugins/daterangepicker/daterangepicker.css"}}
+    {{CSS "assets/plugins/select2/select2.min.css"}}
+    {{CSS "assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css"}}
+    {{CSS "assets/plugins/timepicker/bootstrap-material-datetimepicker.css"}}
+    {{CSS "assets/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css"}}
+
+
+
+{{end}}
+
+{{define "extrajs"}}
+    <!-- Plugins js -->
+    {{JS "assets/plugins/moment/moment.js"}}
+    <script src='https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js'></script>
+
+
+    {{JS "assets/plugins/daterangepicker/daterangepicker.js"}}
+    {{JS "assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"}}
+    {{JS "assets/plugins/timepicker/bootstrap-material-datetimepicker.js"}}
+
+    {{JS "assets/plugins/select2/select2.min.js"}}
+    {{JS "assets/plugins/ckeditor/ckeditor.js"}}
+    {{JS "assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"}}
+    {{JS "assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"}}
+    {{JS "assets/plugins/repeater/jquery.repeater.min.js"}}
+    {{JS "assets/plugins/RWD-Table-Patterns/dist/js/rwd-table.min.js"}}
+    {{JS "assets/pages/jquery.form-repeater.js"}}
+    {{JS "assets/pages/jquery.forms-advanced.js"}}
+    {{/*    {{JS "assets/plugins/tinymce/tinymce.min.js"}}*/}}
+    {{/*    {{JS "assets/pages/jquery.form-editor.init.js"}}*/}}
+
+    <script>
+
+        moment.locale('fa');
+        unixTime = moment().unix();
+    </script>
+
+{{end}}
+{{define "content"}}
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Others</a></li>
+                            <li class="breadcrumb-item active">Form Advanced</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">{{gettext "Insert Promote"}}</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div class="row">
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="btn-toolbar">
+                                    <div class="btn-group focus-btn-group ">
+                                        <button type="submit"
+                                                class="btn btn-lg btn-primary">{{gettext "Save"}} </button>
+
+
+                                    </div>
+                                </div>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#home" role="tab"
+                                           aria-selected="true">{{gettext "Promote "}}</a>
+                                    </li>
+
+
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane p-3 active" id="home" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+
+                                                                <div class="form-group ">
+                                                                    <label for="link">{{gettext "Promote name"}}</label>
+                                                                    <input type="text" class="form-control  bg-light"
+                                                                           maxlength="50"
+                                                                           name="name"
+                                                                           required
+                                                                           id="link"/>
+                                                                </div>
+
+                                                                <div class="form-group ">
+                                                                    <label class="control-label">{{gettext "Off"}}</label>
+
+                                                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+
+                                                                            <span class="input-group-btn input-group-prepend"><input
+                                                                                        id="demo1"
+                                                                                        maxlength="2"
+                                                                                        type="text"
+                                                                                        value="0"
+                                                                                        required
+                                                                                        name="discount"
+                                                                                        class="form-control"><span
+                                                                                        class="bootstrap-touchspin-postfix input-group-append"><span
+                                                                                            class="input-group-text">%</span></span><span
+                                                                                        class="input-group-btn input-group-append">
+                                                                                                    </span>
+                                                                                                </span>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label class="my-3">{{gettext "Start Date"}}</label>
+                                                                            <input type="text" class="form-control"
+                                                                                   placeholder="Start date"
+                                                                                   onchange="valueStartChange(this.value)"
+                                                                                   id="date-start" data-dtp="dtp_4DC03">
+                                                                            <input type="hidden" name="startdate"
+                                                                                   id="dateStartUnix"/>
+                                                                        </div><!--end col-->
+                                                                        <div class="col-md-6">
+                                                                            <label class="my-3">{{gettext "End Date"}}</label>
+                                                                            <input type="text" class="form-control"
+                                                                                   placeholder="End date" id="date-end"
+                                                                                   onchange="valueEndChange(this.value)"
+                                                                                   data-dtp="dtp_njiow">
+                                                                            <input type="hidden" name="enddate"
+
+                                                                                   id="dateEndtUnix"/>
+                                                                        </div><!--end col-->
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="csrf"
+                                                                       value="{{.csrf_token}}">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">{{gettext "Submit"}}</button>
+                                                                <button type="button"
+                                                                        class="btn btn-danger">{{gettext "Cancel"}}</button>
+
+                                                            </div><!--end card-body-->
+                                                        </div><!--end card-->
+                                                    </div><!--end col-->
+                                                </div>
+
+
+                                            </div> <!-- end col -->
+
+                                            <div class="col-lg-6">
+
+
+                                                <h4 class="header-title mt-0">{{gettext "Select  file "}}</h4>
+                                                <div>
+                                                    <p>
+                                                        You are able to uploaded any file provided the file is not
+                                                        larger than the maximum per file upload size (2 MB), it is an
+                                                        allowed file format and you have sufficient storage space
+                                                        available.
+                                                        Before uploading files, please ensure that you own, or have
+                                                        permission to distribute them. If you do not own the files, and
+                                                        do not have express permission from the owner or copyright
+                                                        holder, you aren’t allowed to use on your blog.
+                                                    </p>
+                                                    <p>
+
+                                                        IMAGES .jpg .jpeg .png .gif
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div> <!-- end col -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div><!--end col-->
+
+            </form>
+        </div>
+
+
+    </div>
+
+    </div><!-- container -->
+
+    <script type="text/javascript">
+
+        function valueEndChange(v) {
+            // m = moment().from('v', 'fa', 'D/M/YYYY HH:ss').unix;
+            console.log(v);
+            const date = moment.from(v, 'fa', 'DD/MM/YYYY HH:mm').locale('en').format('YYYY/MM/DD HH:mm');
+            document.getElementById('dateEndtUnix').value = date;
+            console.log(date)
+            // console.log(m.unix)
+        }
+
+        function valueStartChange(v) {
+            console.log(v);
+            const date = moment.from(v, 'fa', 'DD/MM/YYYY HH:mm').locale('en').format('YYYY/MM/DD HH:mm');
+            document.getElementById('dateStartUnix').value =  date;
+            console.log(date)
+        }
+    </script>
+
+{{end}}

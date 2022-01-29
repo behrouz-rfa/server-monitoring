@@ -1,0 +1,206 @@
+{{define "title"}}Users{{end}}
+{{define "cssextra"}}
+    <!-- DataTables -->
+    {{CSS "assets/plugins/datatables/dataTables.bootstrap4.min.css"}}
+    {{CSS "assets/plugins/datatables/buttons.bootstrap4.min.css"}}
+
+{{end}}
+{{define "extrajs"}}
+    <!-- Required datatable js -->
+    {{JS "assets/plugins/datatables/jquery.dataTables.min.js"}}
+    {{JS "assets/plugins/datatables/dataTables.bootstrap4.min.js"}}
+    {{JS "assets/plugins/repeater/jquery.repeater.min.js"}}
+
+{{end}}
+{{define "content"}}
+
+    {{$currentPage := .paginate.CurrentPage}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Ecommerce</a></li>
+                            <li class="breadcrumb-item active">Product List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">{{gettext "User List"}}</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+
+        <!-- end page title end breadcrumb -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h4 class="mt-0 header-title">{{gettext "Users"}}</h4>
+                        <p class="text-muted mb-4 font-13">
+                            {{gettext "Available all Users."}}
+                        </p>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <table id="datatable" class="table table-striped mb-0"
+                                       style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead class="thead-light">
+                                    <tr class="footable-filtering">
+                                        <th colspan="6">
+                                            <form class="form-inline">
+                                                <div class="form-group footable-filtering-search"><label
+                                                            class="sr-only">{{gettext "Search:"}}</label>
+                                                    <div class="input-group"><input type="text" class="form-control"
+                                                                                    placeholder="Search">
+                                                        <div class="input-group-append input-group-btn">
+                                                            <button type="button" class="btn btn-primary"><span
+                                                                        class="fa fa-search"></span></button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>{{gettext "Users"}}</th>
+                                        <th>{{gettext "Rols"}}</th>
+                                        <th>{{gettext "Email"}}</th>
+                                        <th>{{gettext "Contact No"}}</th>
+                                        <th>{{gettext "Status"}}</th>
+                                        <th>{{gettext "Action"}}</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    {{range $item := .paginate.Items}}
+                                        <tr>
+
+                                            <td><img src="../assets/images/users/user-3.jpg" alt=""
+                                                     class="rounded-circle thumb-sm mr-1"> Aaron Poulin
+                                            </td>
+                                            <td>
+                                                {{if eq $item.IsSuperAdmin 1}}
+                                                    <span class="badge badge-soft-success">     {{gettext "Super Admin"}}</span>
+
+                                                {{else}}
+                                                    {{gettext "Customer"}}
+                                                {{end}}
+
+                                            </td>
+                                            <td>{{$item.Email}}</td>
+                                            <td>{{$item.PhoneNumber}}</td>
+                                            <td>
+                                                {{if eq $item.Status 1}}
+                                                    <span class="badge badge-soft-success">{{gettext "Active"}}</span>
+                                                {{else}}
+                                                    <span class="badge badge-soft-warning">{{gettext "Deactivated"}}</span>
+
+                                                {{end}}
+                                            </td>
+                                            <td>
+                                                <a href="#" class="mr-2"><i
+                                                            class="fas fa-edit text-info font-16"></i></a>
+                                                <a onclick="removeUser({{$item.Id}},{{$currentPage}})" href="#"><i
+                                                            class="fas fa-trash-alt text-danger font-16"></i>
+
+
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {{end}}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {{if ge .paginate.Pages 1}}
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+                                        Page {{.paginate.CurrentPage}} of {{.paginate.Count}} entries
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                                        <ul class="pagination">
+                                            {{if .paginate.Previous}}
+                                                <li class="paginate_button page-item previous "
+                                                    id="datatable_previous">
+                                                    <a href="?page={{sub .paginate.CurrentPage}}"
+                                                       aria-controls="datatable" data-dt-idx="0" tabindex="0"
+                                                       class="page-link">{{gettext "Previous"}}</a></li>
+                                            {{end}}
+                                            {{$cp :=.paginate.CurrentPage}}
+                                            {{$lastPage := .paginate.LastPage}}
+                                            {{if  .paginate.ShowPerRow}}
+                                                <li class="paginate_button page-item {{if eq 1  $cp}}active{{end}}">
+                                                    <a href="?page=1"
+                                                       aria-controls="datatable"
+                                                       data-dt-idx="1" tabindex="0"
+                                                       class="page-link">1</a></li>
+
+
+                                                {{ range $i,$val :=   .paginate.PagesList }}
+
+                                                    <li class="paginate_button page-item {{if eq $val  $cp}}active{{end}}">
+                                                        <a href="?page={{$val}}"
+                                                           aria-controls="datatable"
+                                                           data-dt-idx="1" tabindex="0"
+                                                           class="page-link">{{$val}}</a></li>
+                                                {{end}}
+
+                                                <li class="paginate_button page-item {{if eq .paginate.Pages  $cp}}active{{end}}">
+                                                    <a href="?page={{.paginate.Pages}}"
+                                                       aria-controls="datatable"
+                                                       data-dt-idx="1" tabindex="0"
+                                                       class="page-link">{{.paginate.Pages}}</a></li>
+                                            {{else}}
+                                                {{ range $i,$val :=  RN .paginate.Pages }}
+
+                                                    <li class="paginate_button page-item {{if eq $val  $cp}}active{{end}}">
+                                                        <a href="?page={{$val}}"
+                                                           aria-controls="datatable"
+                                                           data-dt-idx="1" tabindex="0"
+                                                           class="page-link">{{$val}}</a></li>
+                                                {{end}}
+                                            {{end}}
+                                            {{if .paginate.Next}}
+
+                                                <li class="paginate_button page-item next " id="datatable_next">
+                                                    <a
+                                                            href="?page={{add $cp}}" aria-controls="datatable"
+                                                            data-dt-idx="2"
+                                                            tabindex="0"
+                                                            class="page-link">{{gettext "Next"}}</a></li>
+                                            {{end}}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {{end}}
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+
+    </div><!-- container -->
+
+
+    <script>
+
+        function removeUser(i, p) {
+
+            if (confirm({{gettext "Are you sure you want to remove this item?"}})) {
+                // window.open('/admin/order/delete/' + i + '/' + p,"_self");
+            }
+        }
+
+
+    </script>
+
+{{end}}

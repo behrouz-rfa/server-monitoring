@@ -1,0 +1,253 @@
+{{define "title"}}Go Web App{{end}}
+{{define "cssextra"}}
+    <!-- DataTables -->
+    {{CSS "assets/plugins/RWD-Table-Patterns/dist/css/rwd-table.min.css"}}
+    {{/*    {{CSS "assets/plugins/datatables/buttons.bootstrap4.min.css"}}*/}}
+
+{{end}}
+{{define "extrajs"}}
+    <!-- Required datatable js -->
+    {{JS "assets/plugins/RWD-Table-Patterns/dist/js/rwd-table.min.js"}}
+    {{JS "assets/pages/jquery.responsive-table.init.js"}}
+{{end}}
+{{define "content"}}
+    {{$currentPage := .paginate.CurrentPage}}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Ecommerce</a></li>
+                            <li class="breadcrumb-item active">Product List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Product List</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h4 class="mt-0 header-title">Example</h4>
+                        <p class="text-muted mb-3">This is an experimental awesome solution for responsive tables with
+                            complex data.</p>
+
+                        <div class="table-rep-plugin">
+                            <div class="table-wrapper">
+                                <div class="btn-toolbar">
+                                    <div class="btn-group focus-btn-group">
+                                        <button type="button" class="btn btn-default"><span
+                                                    class="fas fa-crosshairs"></span> Focus
+                                        </button>
+                                    </div>
+                                    <div class="btn-group dropdown-btn-group float-right">
+                                        <button type="button" class="btn btn-default">Display all</button>
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown">Display <span class="caret"></span></button>
+
+                                    </div>
+                                </div>
+                                <div class="table-responsive mb-0 fixed-solution" data-pattern="priority-columns">
+                                    <div class="sticky-table-header"
+                                         style="height: 47px; visibility: hidden; width: auto; top: -1px;">
+                                        <table id="tech-companies-1-clone" class="table table-striped mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th id="tech-companies-1-col-0">Promote Name</th>
+                                                <th data-priority="1"
+                                                    id="tech-companies-1-col-1">{{gettext "Start Date"}}</th>
+                                                <th data-priority="3"
+                                                    id="tech-companies-1-col-2">{{gettext "End Date"}}</th>
+                                                <th data-priority="1" id="tech-companies-1-col-3">{{gettext "Discount"}}%
+                                                </th>
+                                                <th data-priority="3" id="tech-companies-1-col-4">{{gettext "Status"}}</th>
+
+                                                <th data-priority="1" id="tech-companies-1-col-6">{{gettext "Action"}}</th>
+                                            </tr>
+                                            </thead>
+
+                                        </table>
+                                    </div>
+                                    <table id="tech-companies-1" class="table table-striped mb-0">
+                                        <thead>
+                                        <tr>
+                                        <tr>
+                                            <th id="tech-companies-1-col-0">Promote Name</th>
+                                            <th data-priority="1"
+                                                id="tech-companies-1-col-1">{{gettext "Start Date"}}</th>
+                                            <th data-priority="3"
+                                                id="tech-companies-1-col-2">{{gettext "End Date"}}</th>
+                                            <th data-priority="1" id="tech-companies-1-col-3">{{gettext "Discount"}}%
+                                            </th>
+                                            <th data-priority="3" id="tech-companies-1-col-4">{{gettext "Status"}}</th>
+
+                                            <th data-priority="1" id="tech-companies-1-col-6">{{gettext "Action"}}</th>
+                                        </tr>
+
+                                        </thead>
+                                        <tbody>
+                                        {{range $item := .paginate.Items}}
+                                            <tr>
+                                                <td data-org-colspan="1" data-columns="tech-companies-1-col-0">
+                                                    <img src="../assets/images/products/img-2.png" alt="" height="52">
+                                                    <p class="d-inline-block align-middle mb-0">
+                                                        <a href=""
+                                                           class="d-inline-block align-middle mb-0 product-name">{{$item.PromoteName}}</a>
+                                                        <br>
+                                                        <span class="text-muted font-13">{{$item.CreatedAt}}</span>
+                                                    </p>
+                                                </td>
+                                                <td data-org-colspan="1" data-priority="1"
+
+                                                    data-columns="tech-companies-1-col-1">
+                                                    {{$item.EndDateStr}}
+                                                </td>
+                                                <td data-org-colspan="1" data-priority="3"
+                                                    data-columns="tech-companies-1-col-2">
+                                                    {{$item.StartDateStr}}
+                                                </td>
+                                                <td data-org-colspan="1" data-priority="1"
+                                                    data-columns="tech-companies-1-col-3">
+                                                    {{$item.Discount}}
+                                                </td>
+                                                <td data-org-colspan="1" data-priority="3"
+                                                    data-columns="tech-companies-1-col-4"><span
+                                                            class="badge badge-soft-warning"></span></td>
+
+                                                <td data-org-colspan="1" data-priority="1"
+                                                    data-columns="tech-companies-1-col-6">
+                                                    <a href="/admin/promote/edit/{{$item.Id}}"><i
+                                                                class="far fa-edit text-info mr-1"></i></a>
+                                                    <span data-repeater-delete=""
+                                                          onclick="deleteItem({{$item.Id}},{{$currentPage}})"
+                                                          class="btn btn-danger btn-sm">
+                                                      <span class="far fa-trash-alt mr-1"></span>
+                                                  </span>
+
+                                                </td>
+                                            </tr>
+                                        {{end}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {{if ge .paginate.Pages 1}}
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+                                        Page {{.paginate.CurrentPage}} of {{.paginate.Count}} entries
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                                        <ul class="pagination">
+                                            {{if .paginate.Previous}}
+                                                <li class="paginate_button page-item previous "
+                                                    id="datatable_previous">
+                                                    <a href="?page={{sub .paginate.CurrentPage}}"
+                                                       aria-controls="datatable" data-dt-idx="0" tabindex="0"
+                                                       class="page-link">{{gettext "Previous"}}</a></li>
+                                            {{end}}
+                                            {{$cp :=.paginate.CurrentPage}}
+                                            {{$lastPage := .paginate.LastPage}}
+                                            {{if  .paginate.ShowPerRow}}
+                                                <li class="paginate_button page-item {{if eq 1  $cp}}active{{end}}">
+                                                    <a href="?page=1"
+                                                       aria-controls="datatable"
+                                                       data-dt-idx="1" tabindex="0"
+                                                       class="page-link">1</a></li>
+
+
+                                                {{ range $i,$val :=   .paginate.PagesList }}
+
+                                                    <li class="paginate_button page-item {{if eq $val  $cp}}active{{end}}">
+                                                        <a href="?page={{$val}}"
+                                                           aria-controls="datatable"
+                                                           data-dt-idx="1" tabindex="0"
+                                                           class="page-link">{{$val}}</a></li>
+                                                {{end}}
+
+                                                <li class="paginate_button page-item {{if eq .paginate.Pages  $cp}}active{{end}}">
+                                                    <a href="?page={{.paginate.Pages}}"
+                                                       aria-controls="datatable"
+                                                       data-dt-idx="1" tabindex="0"
+                                                       class="page-link">{{.paginate.Pages}}</a></li>
+                                            {{else}}
+                                                {{ range $i,$val :=  RN .paginate.Pages }}
+
+                                                    <li class="paginate_button page-item {{if eq $val  $cp}}active{{end}}">
+                                                        <a href="?page={{$val}}"
+                                                           aria-controls="datatable"
+                                                           data-dt-idx="1" tabindex="0"
+                                                           class="page-link">{{$val}}</a></li>
+                                                {{end}}
+                                            {{end}}
+                                            {{if .paginate.Next}}
+
+                                                <li class="paginate_button page-item next " id="datatable_next">
+                                                    <a
+                                                            href="?page={{add $cp}}" aria-controls="datatable"
+                                                            data-dt-idx="2"
+                                                            tabindex="0"
+                                                            class="page-link">{{gettext "Next"}}</a></li>
+                                            {{end}}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {{end}}
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div>
+
+
+    </div><!-- container -->
+    <script>
+
+        function valueDateTounixChange(el,value) {
+            var va =moment().unix(value).format("M/D/YYYY H:mm");
+            console.log(va)
+        }
+        function searchProduct(value) {
+            // console.log(value);
+            // var xhr = new XMLHttpRequest();
+            // // type (eg POST, GET, etc), and api endpoint
+            // xhr.open('GET', '/admin/product?search='+value);
+            // // tell it you're sending json
+            // xhr.setRequestHeader('Content-Type', 'application/json');
+            // // call this function on load
+            // xhr.onload = function () {
+            //     // if it was successful
+            //     if (xhr.status === 200) {
+            //         // parse the response into json
+            //         // var userInfo = JSON.parse(xhr.responseText);
+            //         // use the json to change your apps UI
+            //         //  document.getElementById("footer").innerHTML = userInfo.error;
+            //     }
+            // };
+            // xhr.send(JSON.stringify({
+            //     // user info here
+            //     error: "nil"
+            // }));
+        }
+
+        function deleteItem(i, p) {
+
+            if (confirm({{gettext "Are you sure you want to remove this item?"}})) {
+                //  window.open('/admin/order/delete/' + i + '/' + p, "_self");
+            }
+        }
+    </script>
+
+
+{{end}}

@@ -1,0 +1,1012 @@
+{{define "title"}}Category{{end}}
+{{define "cssextra"}}
+    {{CSS "assets/plugins/RWD-Table-Patterns/dist/css/rwd-table.min.css"}}
+    {{CSS "assets/plugins/daterangepicker/daterangepicker.css"}}
+    {{CSS "assets/plugins/select2/select2.min.css"}}
+    {{CSS "assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css"}}
+    {{CSS "assets/plugins/timepicker/bootstrap-material-datetimepicker.css"}}
+    {{CSS "assets/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css"}}
+
+
+
+{{end}}
+
+{{define "extrajs"}}
+    <!-- Plugins js -->
+    {{JS "assets/plugins/moment/moment.js"}}
+    {{JS "assets/plugins/daterangepicker/daterangepicker.js"}}
+    {{JS "assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"}}
+    {{JS "assets/plugins/timepicker/bootstrap-material-datetimepicker.js"}}
+    {{JS "assets/plugins/ckeditor/ckeditor.js"}}
+    {{JS "assets/plugins/select2/select2.min.js"}}
+    {{JS "assets/plugins/RWD-Table-Patterns/dist/js/rwd-table.min.js"}}
+
+    {{JS "assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"}}
+    {{JS "assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"}}
+    {{JS "assets/plugins/repeater/jquery.repeater.min.js"}}
+    {{/*    {{JS "assets/pages/jquery.form-repeater.js"}}*/}}
+
+
+    {{/*    {{JS "assets/pages/jquery.form-repeater.js"}}*/}}
+    {{JS "assets/pages/jquery.forms-advanced.js"}}
+    {{/*    {{JS "assets/plugins/tinymce/tinymce.min.js"}}*/}}
+    {{/*    {{JS "assets/pages/jquery.form-editor.init.js"}}*/}}
+    <script>
+
+        $(document).ready(function () {
+            'use strict';
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            });
+
+
+            $('.repeater-default').repeater();
+
+            $('.repeater-custom-show-hide-features').repeater({
+                show: function () {
+
+                    $(this).slideDown();
+
+                },
+
+                hide: function (remove) {
+                    Swal.fire({
+                        title: '{{gettext "Are you sure you want to remove this item?"}}',
+                        icon: 'question',
+                        iconHtml: '؟',
+                        confirmButtonText: '{{gettext "Yes, delete it!"}}',
+                        cancelButtonText: '{{gettext "'No, cancel!'"}}',
+                        showCancelButton: true,
+                        showCloseButton: true
+                    }).then((result) => {
+
+
+                        var child = $(this).children().find(".features_c");
+                        var f_id = child[0].value;
+
+                        var xhr = new XMLHttpRequest();
+                        // type (eg POST, GET, etc), and api endpoint
+                        xhr.open('GET', '/admin/features/delete/' + f_id);
+                        // tell it you're sending json
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        // call this function on load
+                        xhr.onload = function () {
+                            // if it was successful
+                            if (xhr.status === 200) {
+                                // parse the response into json
+                                // var userInfo = JSON.parse(xhr.responseText);
+                                // use the json to change your apps UI
+                                //  document.getElementById("footer").innerHTML = userInfo.error;
+                                $(this).slideUp(remove);
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                )
+                            } else {
+                                Swal.fire(
+                                    'Cancelled',
+                                    'Your imaginary file is safe :)',
+                                    'error'
+                                )
+                            }
+                        };
+                        xhr.send(JSON.stringify({
+                            // user info here
+                            error: "nil"
+                        }));
+
+                    });
+
+                }
+            });
+
+            $('.repeater-custom-show-hide-price').repeater({
+                show: function () {
+
+                    $(this).slideDown();
+
+                },
+
+                hide: function (remove) {
+
+                    Swal.fire({
+                        title: '{{gettext "Are you sure you want to remove this item?"}}',
+                        icon: 'question',
+                        iconHtml: '؟',
+                        confirmButtonText: '{{gettext "Yes, delete it!"}}',
+                        cancelButtonText: '{{gettext "'No, cancel!'"}}',
+                        showCancelButton: true,
+                        showCloseButton: true
+                    }).then((result) => {
+
+
+                        var child = $(this).children().find(".price");
+                        var f_id = child[0].value;
+
+                        var xhr = new XMLHttpRequest();
+                        // type (eg POST, GET, etc), and api endpoint
+                        xhr.open('GET', '/admin/prices/delete/' + f_id);
+                        // tell it you're sending json
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        // call this function on load
+                        xhr.onload = function () {
+                            // if it was successful
+                            if (xhr.status === 200) {
+                                // parse the response into json
+                                // var userInfo = JSON.parse(xhr.responseText);
+                                // use the json to change your apps UI
+                                //  document.getElementById("footer").innerHTML = userInfo.error;
+                                $(this).slideUp(remove);
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                )
+                            } else {
+                                Swal.fire(
+                                    'Cancelled',
+                                    'Your imaginary file is safe :)',
+                                    'error'
+                                )
+                            }
+                        };
+                        xhr.send(JSON.stringify({
+                            // user info here
+                            error: "nil"
+                        }));
+
+                    });
+                }
+            });
+
+            $('.repeater-custom-show-hide-colors').repeater({
+                show: function () {
+
+                    $(this).slideDown();
+
+                },
+                hide: function (remove) {
+
+                    Swal.fire({
+                        title: '{{gettext "Are you sure you want to remove this item?"}}',
+                        icon: 'question',
+                        iconHtml: '؟',
+                        confirmButtonText: '{{gettext "Yes, delete it!"}}',
+                        cancelButtonText: '{{gettext "'No, cancel!'"}}',
+                        showCancelButton: true,
+                        showCloseButton: true
+                    }).then((result) => {
+
+                        $(this).slideUp(remove);
+
+
+                    });
+                }
+            });
+
+
+        });
+    </script>
+
+
+
+{{end}}
+{{define "content"}}
+    {{$poductId := .product.Id}}
+    {{$baseUrl :=.BaseURI}}
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Others</a></li>
+                            <li class="breadcrumb-item active">Form Advanced</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">{{gettext "Insert Category"}}</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div class="row">
+
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" value="{{$poductId}}" name="product_id">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="btn-toolbar">
+                                    <div class="btn-group focus-btn-group ">
+                                        <button type="submit"
+                                                class="btn btn-lg btn-primary">{{gettext "Save"}} </button>
+
+
+                                    </div>
+                                </div>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#home" role="tab"
+                                           aria-selected="true">{{gettext "Product information"}}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#profile" role="tab"
+                                           aria-selected="false">{{gettext "Product files"}}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#settings" role="tab"
+                                           aria-selected="false">{{gettext "Product review"}}</a>
+                                    </li>
+
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane p-3 active" id="home" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+
+                                                <h4 class="header-title mt-0">{{gettext "Insert Product"}}</h4>
+                                                <p class="text-muted mb-3">{{gettext "Please fill the form and create product"}}
+                                                </p>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="language_id">{{gettext "Select Languages"}}</label>
+                                                                            <select name="language_id"
+                                                                                    id="language_id"
+                                                                                    class="form-control bg-light"
+                                                                                    style="width: 100%; height:36px;">
+
+                                                                                <option selected
+                                                                                        value="{{.languages.Id}}">{{.languages.Language}}</option>
+
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+
+                                                                    <div class="col-sm-12 col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="category">{{gettext "Select Category"}}</label>
+
+                                                                            <select name="category" id="category"
+                                                                                    class="select2 form-control bg-light mb-3 custom-select"
+                                                                                    style="width: 100%; height:36px;">
+                                                                                {{$catId :=  .product.CategoryId}}
+
+                                                                                {{range $n := .categories}}
+                                                                                    {{$id := $n.Id}}
+                                                                                    <option {{if eq $id $catId}}selected {{end}}
+                                                                                            value="{{.Id}}">{{.Title}}</option>
+                                                                                {{end}}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="brand_id">{{gettext "Select Brand"}}</label>
+                                                                            <select name="brand_id"
+                                                                                    id="brand_id"
+                                                                                    class="select2 form-control mb-3 custom-select select2-hidden-accessible"
+                                                                                    style="width: 100%; height:36px;">
+
+                                                                                {{$brandId :=  .product.BrandId}}
+
+                                                                                {{range $n := .brands}}
+                                                                                    {{$id := $n.Id}}
+                                                                                    <option {{if eq $id $brandId}}selected {{end}}
+                                                                                            value="{{.Id}}">{{.Title}}</option>
+                                                                                {{end}}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="title">{{gettext "Product Name"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="200"
+                                                                           name="name"
+                                                                           value="{{.product.Title}}"
+                                                                           id="title"/>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="guaranteeid">{{gettext "Guarantee"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="200"
+                                                                           name="guarantee"
+                                                                           value="{{.product.Guarantee}}"
+                                                                           id="guaranteeid"/>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="elm1">{{gettext "Description"}}</label>
+
+                                                                    <textarea name="description" id="description"
+                                                                              rows="10" cols="80">
+                                               {{.product.Description}}
+                                             </textarea>
+                                                                    <script>
+                                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                                            // Replace the <textarea id="editor1"> with a CKEditor
+                                                                            // instance, using default configuration.
+                                                                            CKEDITOR.replace('description');
+
+                                                                        })
+                                                                    </script>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <label for="keywordId">{{gettext "Keywords"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="255"
+                                                                           name="keyword"
+                                                                           value="{{.product.Keyword}}"
+                                                                           id="keywordId"/>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="metaId">{{gettext "Meta Descriptions"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="512"
+                                                                           name="meta"
+                                                                           value="{{.product.Meta}}"
+                                                                           id="metaId"/>
+                                                                </div>
+                                                                <div class="form-group form-check">
+                                                                    <input type="checkbox" name="status"
+                                                                           class="form-check-input"
+                                                                           id="exampleCheck1">
+                                                                    <label class="form-check-label"
+                                                                           for="exampleCheck1">{{gettext "Status"}}</label>
+                                                                </div>
+                                                                <input type="hidden" name="csrf"
+                                                                       value="{{.csrf_token}}">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">{{gettext "Submit"}}</button>
+                                                                <button type="button"
+                                                                        class="btn btn-danger">{{gettext "Cancel"}}</button>
+
+                                                            </div><!--end card-body-->
+                                                        </div><!--end card-->
+                                                    </div><!--end col-->
+
+                                                </div>
+
+
+                                            </div> <!-- end col -->
+
+                                            <div class="col-lg-6">
+
+                                                <h4 class="header-title mt-0">{{gettext "Edit Price"}}</h4>
+
+                                                </p>
+
+
+                                                {{$currenc:=.curList}}
+                                                {{$sizeOfC := (len .curList)}}
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <fieldset>
+                                                                    <div class="repeater-custom-show-hide-price">
+                                                                        <div data-repeater-list="prices">
+                                                                            {{$productprice := .product.Prices}}
+                                                                            {{if  gt (len .product.Prices) 0}}
+                                                                                {{range $p:= .product.Prices}}
+                                                                                    <div data-repeater-item="">
+                                                                                        <div class="form-group row  d-flex align-items-end">
+                                                                                            <input type="hidden"
+                                                                                                   name="prices[0][id]"
+                                                                                                   class="price"
+                                                                                                   value="{{$p.Id}}">
+                                                                                            <div class="col-sm-4">
+                                                                                                <label class="control-label">{{gettext "Currency"}}</label>
+                                                                                                <select name="prices[0][currency]"
+                                                                                                        class="form-control bg-light">
+                                                                                                    {{/*check the selected curreny*/}}
+                                                                                                    {{$p_cid := $p.CurrencyId}}
+                                                                                                    {{range $c := $currenc}}
+                                                                                                        {{$curencyid := $c.Id}}
+                                                                                                        {{if eq $p_cid $curencyid}}
+                                                                                                            <option selected
+                                                                                                                    value="{{$c.Id}}">{{$c.Name}}</option>
+                                                                                                        {{end}}
+                                                                                                    {{end}}
+                                                                                                </select>
+                                                                                            </div><!--end col-->
+
+                                                                                            <div class="col-sm-4">
+                                                                                                <label class="control-label">{{gettext "Price"}}</label>
+                                                                                                <input type="number"
+                                                                                                       name="prices[0][price]"
+                                                                                                       class="form-control bg-light"
+                                                                                                       required
+                                                                                                       value="{{$p.Price}}">
+                                                                                            </div><!--end col-->
+                                                                                            <div class="col-sm-4">
+                                                                                                <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                                                                    <label class="control-label">{{gettext "Off"}}</label>
+                                                                                                    <span class="input-group-btn input-group-prepend"><input
+                                                                                                                id="demo1"
+                                                                                                                maxlength="2"
+                                                                                                                type="text"
+                                                                                                                value="{{$p.Off}}"
+                                                                                                                name="prices[0][off]"
+                                                                                                                class="form-control"><span
+                                                                                                                class="bootstrap-touchspin-postfix input-group-append"><span
+                                                                                                                    class="input-group-text">%</span></span><span
+                                                                                                                class="input-group-btn input-group-append">
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            {{if gt $sizeOfC 1}}
+                                                                                                <div class="col-sm-2">
+                                                                                                <span data-repeater-delete=""
+                                                                                                      class="btn btn-danger btn-sm">
+                                                                                                    <span class="far fa-trash-alt mr-1"></span> {{gettext "Delete"}}
+                                                                                                </span>
+                                                                                                </div><!--end col-->
+                                                                                            {{end}}
+                                                                                        </div><!--end row-->
+                                                                                    </div><!--end /div-->'
+                                                                                {{end}}
+                                                                            {{else}}
+                                                                                <div data-repeater-item="">
+                                                                                    <div class="form-group row  d-flex align-items-end">
+
+                                                                                        <div class="col-sm-5">
+                                                                                            <label class="control-label">{{gettext "Currency"}}</label>
+                                                                                            <select name="prices[0][currency]"
+                                                                                                    class="form-control">
+
+                                                                                                {{range $c := $currenc}}
+
+                                                                                                    <option
+                                                                                                            value="{{$c.Id}}">{{$c.Name}}</option>
+                                                                                                {{end}}
+                                                                                            </select>
+                                                                                        </div><!--end col-->
+
+                                                                                        <div class="col-sm-5">
+                                                                                            <label class="control-label">{{gettext "Price"}}</label>
+                                                                                            <input type="number"
+                                                                                                   name="prices[0][price]"
+                                                                                                   class="form-control"
+                                                                                                   required
+                                                                                            >
+                                                                                        </div><!--end col-->
+
+
+                                                                                        <div class="col-sm-2">
+                                                                <span data-repeater-delete=""
+                                                                      class="btn btn-danger btn-sm">
+                                                                    <span class="far fa-trash-alt mr-1"></span> {{gettext "Delete"}}
+                                                                </span>
+                                                                                        </div><!--end col-->
+                                                                                    </div><!--end row-->
+                                                                                </div><!--end /div-->'
+                                                                            {{end}}
+                                                                        </div>
+
+
+                                                                        {{/*                                                                        <div class="form-group row mb-0">*/}}
+                                                                        {{/*                                                                            <div class="col-sm-12">*/}}
+                                                                        {{/*                                                        <span data-repeater-create="" class="btn btn-secondary btn-md">*/}}
+                                                                        {{/*                                                            <span class="fa fa-plus"></span> {{gettext "Add"}}*/}}
+                                                                        {{/*                                                        </span>*/}}
+                                                                        {{/*                                                                            </div><!--end col-->*/}}
+                                                                        {{/*                                                                        </div><!--end row-->*/}}
+                                                                    </div> <!--end repeter-->
+                                                                </fieldset><!--end fieldset-->
+
+                                                            </div><!--end card-body-->
+                                                        </div><!--end card-->
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <h4 class="header-title mt-0">{{gettext "Product Count"}}</h4>
+                                                <p class="text-muted mb-3">{{gettext "Product count  by color"}}
+                                                </p>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <fieldset>
+                                                                    <div class="repeater-custom-show-hide-colors">
+
+                                                                        <div data-repeater-list="colors">
+                                                                            {{if gt (len .product.ProductColorCount) 0}}
+                                                                                {{range $pc :=.product.ProductColorCount}}
+                                                                                    <div data-repeater-item="">
+                                                                                        <div class="form-group row  d-flex align-items-end">
+
+                                                                                            <input type="hidden"
+                                                                                                   name="colors[0][id]"
+                                                                                                   class="form-control features_c bg-light"
+                                                                                                   value="{{$pc.Id}}">
+                                                                                            <div class="col-sm-5">
+                                                                                                <label for="colorsID"
+                                                                                                       class="control-label">{{gettext "Select Color"}}</label>
+
+                                                                                                <div id="b_color-default"
+                                                                                                     class="input-group colorpicker-element"
+                                                                                                     title="Using input value"
+                                                                                                     data-colorpicker-id="1">
+                                                                                                    <input type="text"
+                                                                                                           name="colors[0][key]"
+                                                                                                           class="form-control input-lg bg-light"
+                                                                                                           value="{{$pc.ProductColor}}">
+
+                                                                                                    <span class="input-group-append">
+                                                                                            <span class="input-group-text colorpicker-input-addon"
+                                                                                                  data-original-title=""
+                                                                                                  title="" tabindex="0"><i
+                                                                                                        style="background: {{$pc.ProductColor}}"></i></span>
+                                                                                        </span>
+                                                                                                </div>
+
+                                                                                            </div><!--end col-->
+
+
+                                                                                            <div class="col-sm-5">
+                                                                                                <label for="colorsID"
+                                                                                                       class="control-label">{{gettext "Count"}}</label>
+                                                                                                <input type="text"
+                                                                                                       id="colorsID"
+                                                                                                       name="colors[0][value]"
+                                                                                                       required
+                                                                                                       value="{{$pc.ProductCount}}"
+                                                                                                       class="form-control bg-light">
+                                                                                            </div><!--end col-->
+
+
+                                                                                            <div class="col-sm-2">
+                                                                                            <span data-repeater-delete=""
+                                                                                                  class="btn btn-danger btn-sm">
+                                                                                                <span class="far fa-trash-alt mr-1"></span> {{gettext "Delete"}}
+                                                                                            </span>
+                                                                                            </div><!--end col-->
+                                                                                        </div><!--end row-->
+                                                                                    </div><!--end /div-->
+                                                                                {{end}}
+                                                                            {{else}}
+                                                                                <div data-repeater-item="">
+                                                                                    <div class="form-group row  d-flex align-items-end">
+
+
+                                                                                        <input type="hidden"
+                                                                                               name="colors[0][id]"
+                                                                                               class="form-control features_c bg-light"
+                                                                                               value="0">
+
+
+                                                                                        <div class="col-sm-5">
+                                                                                            <label for="colorsID"
+                                                                                                   class="control-label">{{gettext "Select Color"}}</label>
+
+                                                                                            <div id="b_color-default"
+                                                                                                 class="input-group colorpicker-element"
+                                                                                                 title="Using input value"
+                                                                                                 data-colorpicker-id="1">
+                                                                                                <input type="text"
+                                                                                                       name="colors[0][key]"
+                                                                                                       class="form-control input-lg bg-light"
+                                                                                                       value="#ffffff">
+
+                                                                                                <span class="input-group-append">
+                                                                                            <span class="input-group-text colorpicker-input-addon"
+                                                                                                  data-original-title=""
+                                                                                                  title="" tabindex="0"><i
+                                                                                                        style="background: rgb(255, 255, 255);"></i></span>
+                                                                                        </span>
+                                                                                            </div>
+
+                                                                                        </div><!--end col-->
+
+
+                                                                                        <div class="col-sm-5">
+                                                                                            <label for="colorsID"
+                                                                                                   class="control-label">{{gettext "Count"}}</label>
+                                                                                            <input type="text"
+                                                                                                   id="colorsID"
+                                                                                                   name="colors[0][value]"
+                                                                                                   required
+                                                                                                   value="1"
+                                                                                                   class="form-control bg-light">
+                                                                                        </div><!--end col-->
+
+
+                                                                                        <div class="col-sm-2">
+                                                                                            <span data-repeater-delete=""
+                                                                                                  class="btn btn-danger btn-sm">
+                                                                                                <span class="far fa-trash-alt mr-1"></span> {{gettext "Delete"}}
+                                                                                            </span>
+                                                                                        </div><!--end col-->
+                                                                                    </div><!--end row-->
+                                                                                </div><!--end /div-->
+                                                                            {{end}}
+                                                                        </div><!--end repet-list-->
+
+                                                                        <div class="form-group row mb-0">
+                                                                            <div class="col-sm-12">
+                                                                                        <span data-repeater-create=""
+                                                                                              class="btn btn-secondary btn-md">
+                                                                                            <span class="fa fa-plus"></span> {{gettext "Add"}}
+                                                                                        </span>
+
+                                                                            </div><!--end col-->
+                                                                        </div><!--end row-->
+                                                                    </div> <!--end repeter-->
+                                                                </fieldset><!--end fieldset-->
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <h4 class="header-title mt-0">{{gettext "Edit Options"}}</h4>
+
+                                                </p>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <fieldset>
+                                                                    <div class="repeater-custom-show-hide-features">
+                                                                        <div data-repeater-list="options">
+                                                                            {{if gt (len .features) 0}}
+                                                                                {{range .features}}
+                                                                                    <div data-repeater-item="">
+                                                                                        <div class="form-group row  d-flex align-items-end">
+                                                                                            <input type="hidden"
+                                                                                                   name="options[0][id]"
+                                                                                                   class="form-control features_c bg-light"
+                                                                                                   value="{{.Id}}">
+                                                                                            <div class="col-sm-5">
+                                                                                                <label for="optionID"
+                                                                                                       class="control-label">Feature</label>
+                                                                                                <input type="text"
+                                                                                                       id="optionID"
+                                                                                                       name="options[0][key]"
+                                                                                                       required
+                                                                                                       value="{{.Key}}"
+                                                                                                       class="form-control bg-light">
+                                                                                            </div><!--end col-->
+
+
+                                                                                            <div class="col-sm-5">
+                                                                                                <label for="valuesID"
+                                                                                                       class="control-label">Value</label>
+                                                                                                <input type="text"
+                                                                                                       id="valuesID"
+                                                                                                       name="options[0][value]"
+                                                                                                       required
+                                                                                                       value="{{.Value}}"
+                                                                                                       class="form-control bg-light">
+                                                                                            </div><!--end col-->
+
+
+                                                                                            <div class="col-sm-2">
+                                                                                                <span data-repeater-delete=""
+                                                                                                      class="btn btn-danger btn-sm">
+                                                                                                    <span class="far fa-trash-alt mr-1"></span> Delete
+                                                                                                </span>
+                                                                                            </div><!--end col-->
+                                                                                        </div><!--end row-->
+                                                                                    </div><!--end /div-->
+                                                                                {{end}}
+                                                                            {{else}}
+                                                                                <div data-repeater-item="">
+                                                                                    <div class="form-group row  d-flex align-items-end">
+
+                                                                                        <div class="col-sm-5">
+                                                                                            <label for="optionID"
+                                                                                                   class="control-label">Feature</label>
+                                                                                            <input type="text"
+                                                                                                   id="optionID"
+                                                                                                   name="options[0][key]"
+                                                                                                   required
+                                                                                                   class="form-control bg-light">
+                                                                                        </div><!--end col-->
+
+
+                                                                                        <div class="col-sm-5">
+                                                                                            <label for="valuesID"
+                                                                                                   class="control-label">Value</label>
+                                                                                            <input type="text"
+                                                                                                   id="valuesID"
+                                                                                                   name="options[0][value]"
+                                                                                                   required
+                                                                                                   class="form-control bg-light">
+                                                                                        </div><!--end col-->
+
+
+                                                                                        <div class="col-sm-2">
+                                                                                                <span data-repeater-delete=""
+                                                                                                      class="btn btn-danger btn-sm">
+                                                                                                    <span class="far fa-trash-alt mr-1"></span> Delete
+                                                                                                </span>
+                                                                                        </div><!--end col-->
+                                                                                    </div><!--end row-->
+                                                                                </div><!--end /div-->
+                                                                            {{end}}
+                                                                        </div><!--end repet-list-->
+
+                                                                        <div class="form-group row mb-0">
+                                                                            <div class="col-sm-12">
+                                                                                    <span data-repeater-create=""
+                                                                                          class="btn btn-secondary btn-md">
+                                                                                        <span class="fa fa-plus"></span> Add
+                                                                                    </span>
+
+                                                                            </div><!--end col-->
+                                                                        </div><!--end row-->
+                                                                    </div> <!--end repeter-->
+                                                                </fieldset><!--end fieldset-->
+
+                                                            </div><!--end card-body-->
+                                                        </div><!--end card-->
+                                                    </div><!--end col-->
+
+                                                </div>
+
+
+                                            </div> <!-- end col -->
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane p-3" id="profile" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+
+                                                <h4 class="header-title mt-0">{{gettext "Select  file "}}</h4>
+                                                <div>
+                                                    <p>
+
+                                                        {{gettext "You are able to uploaded any file provided the file is not larger than the maximum per file upload size (2 MB), it is an allowed file format and you have sufficient storage space available  Before uploading files, please ensure that you own, or have permission to distribute them. If you do not own the files, and do not have express permission from the owner or copyright holder, you aren’t allowed to use on your blog."}}
+
+                                                    </p>
+                                                    <p>
+
+                                                        {{gettext "IMAGES"}} .jpg .jpeg .png .gif
+                                                    </p>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+
+                                                            <div class="custom-file mb-3">
+                                                                <input type="file" class="custom-file-input"
+                                                                       id="customFile"
+                                                                       name="files" multiple
+                                                                       onchange="thumb(this.files)">
+                                                                <label class="custom-file-label"
+                                                                       for="customFile">{{gettext "Choose file"}}</label>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-group">
+
+                                                            <div class="row">
+                                                                {{range $f :=.product.Files}}
+                                                                    <div class="col-lg-3">
+                                                                        <div class="card ">
+                                                                            <a href="">
+                                                                                <img src="{{$baseUrl}}{{$f.FilePath}}{{$f.FileName}}"
+                                                                                     alt=""
+                                                                                     width="128" height="128">
+                                                                                {{/*                                                                    <img src="assets/images/products/img-1.png" alt="" class="img-preview">*/}}
+                                                                            </a>
+                                                                            <div class="ribbon ribbon-secondary">
+                                                                                <a href="/admin/file/delete/{{$f.Id}}/{{$poductId}}">{{gettext "Delete"}}</a>
+                                                                            </div>
+
+                                                                        </div><!--end card-->
+                                                                    </div>
+                                                                {{end}}
+                                                            </div>
+
+                                                            <div id="thumbnail"></div>
+                                                            <input hidden id="txtThumbSize" type="text"
+                                                                   style="width: 72px;margin:8px" value="96"/>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row" style="height: 200px;">
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane p-3" id="settings" role="tabpanel">
+                                        <div class="row ">
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="header-title mt-0">{{gettext "Insert Review"}}</h4>
+                                                        <p class="text-muted mb-3">{{gettext "Review part is optional"}}
+                                                        </p>
+
+                                                        <input type="hidden" value="{{.reviews.Id}}" name="review_id">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+
+                                                                <div class="form-group">
+                                                                    <label for="rtitle">{{gettext "Title"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="200"
+                                                                           name="review_name"
+                                                                           value="{{.reviews.Title}}"
+                                                                           id="rtitle"/>
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+                                                                    <label for="elm1">{{gettext "Review Description"}}</label>
+
+                                                                    <textarea name="review" id="review" rows="10"
+                                                                              cols="80">
+                                                {{.reviews.ReviewText}}
+                                             </textarea>
+                                                                    <script>
+                                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                                            // Replace the <textarea id="editor1"> with a CKEditor
+                                                                            // instance, using default configuration.
+                                                                            CKEDITOR.replace('review');
+
+                                                                        })
+                                                                    </script>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="rkeywordId">{{gettext "Review Keywords"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="255"
+                                                                           name="review_keyword"
+                                                                           value="{{.reviews.Keyword}}"
+                                                                           id="rkeywordId"/>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="rmetaId">{{gettext "Review Meta Descriptions"}}</label>
+                                                                    <input type="text" class="form-control bg-light"
+                                                                           maxlength="512"
+                                                                           name="review_meta"
+                                                                           value="{{.reviews.Meta}}"
+                                                                           id="rmetaId"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div><!--end col-->
+
+
+                </div>
+
+            </form>
+
+
+        </div>
+
+    </div><!-- container -->
+
+
+    <script type="text/javascript">
+        function thumb(files) {
+            deleteChild();
+            if (files == null || files == undefined) {
+                document.write("This Browser has no support for HTML5 FileReader yet!");
+                return false;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = /image.*/;
+
+                if (!file.type.match(imageType)) {
+                    continue;
+
+                }
+
+                var reader = new FileReader();
+
+                if (reader != null) {
+
+                    reader.onload = GetThumbnail;
+                    reader.readAsDataURL(file);
+                }
+
+
+            }
+        }
+
+        function deleteChild() {
+            const node = document.getElementById("thumbnail");
+            while (node.hasChildNodes()) {
+                node.removeChild(node.lastChild);
+            }
+
+        }
+
+        function GetThumbnail(e) {
+
+            var myCan = document.createElement('canvas');
+            var img = new Image();
+            img.src = e.target.result;
+            img.onload = function () {
+
+                myCan.id = "myTempCanvas";
+                var tsize = document.getElementById("txtThumbSize").value;
+                myCan.width = Number(tsize);
+                myCan.height = Number(tsize);
+                if (myCan.getContext) {
+                    var cntxt = myCan.getContext("2d");
+                    cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
+                    var dataURL = myCan.toDataURL();
+
+
+                    if (dataURL != null) {
+                        var nImg = document.createElement('img');
+                        nImg.src = dataURL;
+                        // nImg.style.cssText = 'margin:8px';
+                        nImg.className = "img-thumbnail";
+                        document.getElementById("thumbnail").appendChild(nImg);
+
+                    } else
+                        alert('unable to get context');
+
+                }
+
+            }
+
+        }
+    </script>
+
+{{end}}

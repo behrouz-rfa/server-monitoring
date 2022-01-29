@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A premium admin dashboard template by Master" name="description"/>
+    <meta content="Master" name="author"/>
+
+
+
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <title>{{template "title" .}}</title>
+
+    {{CSS "assets/plugins/morris/morris.css"}}
+
+    {{CSS "assets/plugins/sweet-alert2/sweetalert2.min.css"}}
+    {{CSS "assets/plugins/animate/animate.css"}}
+
+
+    {{CSS "assets/css/flag-icon.css"}}
+    {{template "cssextra" .}}
+
+
+    {{CSS "assets/css/bootstrap.min.css"}}
+    {{CSS "assets/css/icons.css"}}
+    {{CSS "assets/css/metisMenu.min.css"}}
+    {{CSS "assets/css/style.css"}}
+    {{CSS "assets/fonts/fonts.css"}}
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+
+
+</head>
+<body style="font-family: ir">
+{{range $fm := .flashes}}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        {
+            {
+                if eq.Class "error"
+            }
+        }
+        Swal.fire(
+            'Oops',
+            '{{.Message}}',
+            'question'
+        );
+        {
+            {
+                end
+            }
+        }
+        {
+            {
+                if eq.Class "success"
+            }
+        }
+        Swal.fire(
+            'Well Done!',
+            '{{.Message}}',
+            'success'
+        );
+        {
+            {
+                end
+            }
+        }
+
+        {
+            {
+                if eq.Class "warning"
+            }
+        }
+        Swal.fire(
+            'warning!',
+            '{{.Message}}',
+            'warning'
+        );
+        {
+            {
+                end
+            }
+        }
+
+        {
+            {
+                if eq.Class "info"
+            }
+        }
+        Swal.fire(
+            'info!',
+            '{{.Message}}',
+            'info'
+        );
+        {
+            {
+                end
+            }
+        }
+    });
+</script>
+{{end}}
+
+
+{{template "head" .}}
+<div class="page-wrapper">
+    {{/* <h1>{{template "title" .}}</h1>*/}}
+
+
+    <!-- Page Content-->
+    <!-- Page Content-->
+    <div class="page-content">
+        {{template "content" .}}
+
+    </div>
+    {{template "footer" .}}
+</div>
+
+
+<!-- jQuery  -->
+{{JS "assets/js/jquery.min.js"}}
+{{JS "assets/js/bootstrap.bundle.min.js"}}
+{{JS "assets/js/metisMenu.min.js"}}
+{{JS "assets/js/waves.min.js"}}
+{{JS "assets/js/jquery.slimscroll.min.js"}}
+
+
+<!-- Extra js -->
+{{template "extrajs".}}
+
+
+{{/*{{JS "assets/pages/jquery.projects_dashboard.init.js"}}*/}}
+
+
+{{JS "assets/plugins/sweet-alert2/sweetalert2.min.js"}}
+{{JS "assets/pages/jquery.sweet-alert.init.js"}}
+
+<!-- App js -->
+{{JS "assets/js/jquery.core.js"}}
+
+{{JS "assets/firbasejs/firbase_config.js"}}
+{{JS "assets/js/app.js"}}
+
+</body>
+</html>

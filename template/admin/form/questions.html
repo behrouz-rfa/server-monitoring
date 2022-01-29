@@ -1,0 +1,324 @@
+{{define "title"}}Questions{{end}}
+{{define "cssextra"}}
+    {{CSS "assets/plugins/RWD-Table-Patterns/dist/css/rwd-table.min.css"}}
+    {{CSS "assets/plugins/daterangepicker/daterangepicker.css"}}
+    {{CSS "assets/plugins/select2/select2.min.css"}}
+    {{CSS "assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css"}}
+    {{CSS "assets/plugins/timepicker/bootstrap-material-datetimepicker.css"}}
+    {{CSS "assets/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css"}}
+
+
+
+{{end}}
+
+{{define "extrajs"}}
+    <!-- Plugins js -->
+    {{JS "assets/plugins/moment/moment.js"}}
+    {{JS "assets/plugins/daterangepicker/daterangepicker.js"}}
+    {{JS "assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"}}
+    {{JS "assets/plugins/timepicker/bootstrap-material-datetimepicker.js"}}
+
+    {{JS "assets/plugins/select2/select2.min.js"}}
+    {{JS "assets/plugins/ckeditor/ckeditor.js"}}
+    {{JS "assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"}}
+    {{JS "assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"}}
+    {{JS "assets/plugins/repeater/jquery.repeater.min.js"}}
+    {{JS "assets/plugins/RWD-Table-Patterns/dist/js/rwd-table.min.js"}}
+    {{JS "assets/pages/jquery.form-repeater.js"}}
+    {{JS "assets/pages/jquery.forms-advanced.js"}}
+    {{/*    {{JS "assets/plugins/tinymce/tinymce.min.js"}}*/}}
+    {{/*    {{JS "assets/pages/jquery.form-editor.init.js"}}*/}}
+
+
+
+{{end}}
+{{define "content"}}
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Others</a></li>
+                            <li class="breadcrumb-item active">Form Advanced</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">{{gettext "Insert Product"}}</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div class="row">
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="btn-toolbar">
+                                    <div class="btn-group focus-btn-group ">
+                                        <button type="submit"
+                                                class="btn btn-lg btn-primary">{{gettext "Save"}} </button>
+
+
+                                    </div>
+                                </div>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#home" role="tab"
+                                           aria-selected="true">{{gettext "Question information"}}</a>
+                                    </li>
+
+
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane p-3 active" id="home" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+
+                                                <h4 class="header-title mt-0">{{gettext "Insert Question"}}</h4>
+                                                <p class="text-muted mb-3">{{gettext "Please fill the form and create Question"}}
+                                                </p>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="survey_id">{{gettext "Select Pool"}}</label>
+                                                                            <select name="survey_id"
+                                                                                    id="survey_id"
+                                                                                    required
+                                                                                    class="select2 form-control mb-3 custom-select "
+                                                                                    style="width: 100%; height:36px; background:#f1f5fa; ">
+                                                                                <option value="0">{{gettext "Select"}}</option>
+                                                                                {{range $n := .surveys}}
+                                                                                    <option value="{{.Id}}">{{.Title}}</option>
+                                                                                {{end}}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div class="form-group ">
+                                                                    <label for="title">{{gettext "Title"}}</label>
+                                                                    <input type="text" class="form-control  bg-light"
+                                                                           maxlength="200"
+                                                                           name="question"
+                                                                           value="{{.name}}"
+                                                                           id="title"/>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <label for="area">{{gettext "Description"}}</label>
+                                                                    <textarea name="description" id="area" rows="10"
+                                                                              cols="80">
+
+                                                                   </textarea>
+                                                                    <script>
+                                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                                            // Replace the <textarea id="editor1"> with a CKEditor
+                                                                            // instance, using default configuration.
+                                                                            CKEDITOR.replace('area');
+
+                                                                        })
+                                                                    </script>
+                                                                </div>
+
+
+                                                                <input type="hidden" name="csrf"
+                                                                       value="{{.csrf_token}}">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">{{gettext "Submit"}}</button>
+                                                                <button type="button"
+                                                                        class="btn btn-danger">{{gettext "Cancel"}}</button>
+
+                                                            </div><!--end card-body-->
+                                                        </div><!--end card-->
+                                                    </div><!--end col-->
+                                                </div>
+
+
+                                            </div> <!-- end col -->
+
+                                            <div class="col-lg-6">
+
+
+                                                <h4 class="header-title mt-0">{{gettext "Insert Answers"}}</h4>
+                                                <p class="text-muted mb-3">{{gettext "Please fill the form to add options"}}
+                                                </p>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <fieldset>
+                                                                    <div class="repeater-custom-show-hide">
+                                                                        <div data-repeater-list="options">
+                                                                            <div data-repeater-item="">
+                                                                                <div class="form-group row  d-flex align-items-end">
+
+                                                                                    <div class="col-sm-7">
+                                                                                        <label for="optionID"
+                                                                                               class="control-label">{{gettext "Answer"}}</label>
+                                                                                        <input type="text"
+                                                                                               id="optionID"
+                                                                                               name="options[0][key]"
+                                                                                               required
+                                                                                               class="form-control bg-light">
+                                                                                    </div><!--end col-->
+
+
+                                                                                    <div class="col-sm-3">
+
+
+                                                                                        <label for="valuesID">{{gettext "Select Type"}}</label>
+                                                                                        <select class="form-control bg-light"
+                                                                                                name="options[0][value]"
+                                                                                                id="valuesID"
+                                                                                                required
+                                                                                                style="width: 100%; height:36px;">
+
+                                                                                            <option>Radio</option>
+                                                                                            <option>Text</option>
+
+                                                                                        </select>
+
+
+                                                                                    </div>
+
+
+                                                                                    <div class="col-sm-2">
+                                                                                            <span data-repeater-delete=""
+                                                                                                  class="btn btn-danger btn-sm">
+                                                                                                <span class="far fa-trash-alt mr-1"></span> {{gettext "Delete"}}
+                                                                                            </span>
+                                                                                    </div><!--end col-->
+                                                                                </div><!--end row-->
+                                                                            </div><!--end /div-->
+
+                                                                        </div><!--end repet-list-->
+
+                                                                        <div class="form-group row mb-0">
+                                                                            <div class="col-sm-12">
+                                                                                        <span data-repeater-create=""
+                                                                                              class="btn btn-secondary btn-md">
+                                                                                            <span class="fa fa-plus"></span> {{gettext "Add"}}
+                                                                                        </span>
+
+                                                                            </div><!--end col-->
+                                                                        </div><!--end row-->
+                                                                    </div> <!--end repeter-->
+                                                                </fieldset><!--end fieldset-->
+
+                                                            </div><!--end card-body-->
+                                                        </div><!--end card-->
+                                                    </div><!--end col-->
+
+                                                </div>
+
+
+                                            </div> <!-- end col -->
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div><!--end col-->
+
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div><!-- container -->
+
+    <script type="text/javascript">
+        function thumb(files) {
+            deleteChild();
+            if (files == null || files == undefined) {
+                document.write("This Browser has no support for HTML5 FileReader yet!");
+                return false;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = /image.*/;
+
+                if (!file.type.match(imageType)) {
+                    continue;
+
+                }
+
+                var reader = new FileReader();
+
+                if (reader != null) {
+
+                    reader.onload = GetThumbnail;
+                    reader.readAsDataURL(file);
+                }
+
+
+            }
+        }
+
+        function deleteChild() {
+            const node = document.getElementById("thumbnail");
+            while (node.hasChildNodes()) {
+                node.removeChild(node.lastChild);
+            }
+
+        }
+
+        function GetThumbnail(e) {
+
+            var myCan = document.createElement('canvas');
+            var img = new Image();
+            img.src = e.target.result;
+            img.onload = function () {
+
+                myCan.id = "myTempCanvas";
+                var tsize = document.getElementById("txtThumbSize").value;
+                myCan.width = Number(tsize);
+                myCan.height = Number(tsize);
+                if (myCan.getContext) {
+                    var cntxt = myCan.getContext("2d");
+                    cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
+                    var dataURL = myCan.toDataURL();
+
+
+                    if (dataURL != null) {
+                        var nImg = document.createElement('img');
+                        nImg.src = dataURL;
+                        // nImg.style.cssText = 'margin:8px';
+                        nImg.className = "img-thumbnail";
+                        document.getElementById("thumbnail").appendChild(nImg);
+
+                    } else
+                        alert('unable to get context');
+
+                }
+
+            }
+
+        }
+    </script>
+
+{{end}}

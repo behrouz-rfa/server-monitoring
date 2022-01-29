@@ -1,0 +1,81 @@
+{
+  "Database": {
+    "Type": "MongoDB",
+    "Bolt": {
+      "Path": "gowebapp.db"
+    },
+    "MongoDB": {
+      "URL": "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false",
+      "Database": "monitoring"
+    },
+    "MySQL": {
+      "Username": "root",
+      "Password": "mitQWERTY@",
+      "Name": "go_db",
+      "Hostname": "127.0.0.1",
+      "Port": 3306,
+      "Parameter": "?parseTime=true"
+    }
+  },
+  "Email": {
+    "Username": "",
+    "Password": "",
+    "Hostname": "",
+    "Port": 25,
+    "From": ""
+  },
+  "Recaptcha": {
+    "Enabled": false,
+    "Secret": "",
+    "SiteKey": ""
+  },
+  "Server": {
+    "Hostname": "",
+    "UseHTTP": true,
+    "UseHTTPS": false,
+    "HTTPPort": 8081,
+    "HTTPSPort": 443,
+    "CertFile": "tls/server.crt",
+    "KeyFile": "tls/server.key"
+  },
+  "Session": {
+    "SecretKey": "@r4B?EThaSEh_drudR7P_hub=s#s2Pah",
+    "Name": "gosess",
+    "Options": {
+      "Path": "/",
+      "Domain": "",
+      "MaxAge": 28800,
+      "Secure": false,
+      "HttpOnly": true
+    }
+  },
+  "Template": {
+    "Root": "base",
+    "RootAdmin": "adminbase",
+    "RootFront": "frontbase",
+    "Children": [
+
+      "partial/menu",
+      "partial/footer",
+      "partial/sidemenu"
+    ] ,
+    "ChildrenAdmin": [
+      "partialadmin/menu",
+      "partialadmin/footer",
+      "partialadmin/sidemenu"
+    ],
+    "ChildrenFront": [
+      "partialfront/menu",
+      "partialfront/footer",
+      "partialfront/notfound",
+      "partialfront/sidemenu"
+    ]
+  },
+  "View": {
+    "BaseURI": "/",
+    "Extension": "html",
+    "Folder": "template",
+    "Name": "blank",
+    "Caching": true
+  }
+}
