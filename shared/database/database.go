@@ -133,6 +133,18 @@ func Connect(d Info) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		db := Mongo.Database("monitoring")
+
+		if err := db.CreateCollection(ctx, "users"); err != nil {
+			fmt.Println(err)
+		}
+		if err := db.CreateCollection(ctx, "requests"); err != nil {
+			fmt.Println(err)
+		}
+		if err := db.CreateCollection(ctx, "nodes"); err != nil {
+			fmt.Println(err)
+		}
+
 		//defer func(Mongo *mongo.Client, ctx context.Context) {
 		//	err := Mongo.Disconnect(ctx)
 		//	if err != nil {
@@ -212,10 +224,7 @@ func InsertLogs(items []nodes.Node) error {
 
 	if Mongo != nil {
 
-
-			nodeCollection = Mongo.Database("monitoring").Collection("nodes")
-
-
+		nodeCollection = Mongo.Database("monitoring").Collection("nodes")
 
 		//var nodes []interface{}
 
@@ -237,8 +246,8 @@ func InsertLogs(items []nodes.Node) error {
 				{"timestamp", item.Timestamp}}
 			_, err := nodeCollection.InsertOne(context.TODO(), nod)
 			if err != nil {
-					loogers.Error("insert node", err)
-					//return err
+				loogers.Error("insert node", err)
+				//return err
 			}
 			//nod := bson.D{
 			//	{"src_ip", item.SrcIp},

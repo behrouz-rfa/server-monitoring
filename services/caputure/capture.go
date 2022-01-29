@@ -3,15 +3,13 @@ package capture
 import (
 	"context"
 	"fmt"
-	"server-monitoring/services/output"
-
 	"server-monitoring/services/caputure/flags"
+	"server-monitoring/services/output"
 	"server-monitoring/services/protos/http"
 	"server-monitoring/services/protos/tls"
 	"sort"
 	"strings"
 	"sync"
-
 
 	"github.com/google/gopacket/layers"
 	"github.com/rs/zerolog/log"
@@ -28,7 +26,7 @@ func newCaptureManager() *captureManager {
 	}
 }
 
-func (t *captureManager) Run(devicenam,filter string) {
+func (t *captureManager) Run(devicenam, filter string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -190,8 +188,8 @@ func (t *captureManager) getConnId(srcAddr string, srcPort int, dstAddr string, 
 	return strings.Join(sortKeys, "_")
 }
 
-func Start(devicenam,filter string) {
-	newCaptureManager().Run(devicenam,filter)
+func Start(devicenam, filter string) {
+	newCaptureManager().Run(devicenam, filter)
 }
 
 func getBPFFilter() string {

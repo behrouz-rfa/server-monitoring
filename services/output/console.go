@@ -3,15 +3,13 @@ package output
 import (
 	"bytes"
 	"fmt"
+	"server-monitoring/domain/requests"
 	"server-monitoring/services/color"
-
 	"server-monitoring/services/protos"
 	"server-monitoring/services/protos/http"
 	"server-monitoring/services/protos/tls"
 	"strings"
 	"time"
-
-
 )
 
 type Console struct {
@@ -32,6 +30,8 @@ type consoleContent struct {
 	statusCode    int
 	contentLength int
 	url           string
+	UserAgent     string
+	Body          []byte
 }
 
 func (t *Console) Print(data protos.Protos, srcAddr string, srcPort int, dstAddr string, dstPort int) {
@@ -56,6 +56,8 @@ func (t *Console) Print(data protos.Protos, srcAddr string, srcPort int, dstAddr
 			statusCode:    v.Response.StatusCode,
 			contentLength: v.Response.ContentLength,
 			url:           url,
+			UserAgent: v.Request.UserAgent,
+			Body: v.Request.Body,
 		}
 		t.printContent(&content)
 		t.printHttpRaw(v)
@@ -76,6 +78,22 @@ func (t *Console) Print(data protos.Protos, srcAddr string, srcPort int, dstAddr
 }
 
 func (t *Console) printContent(content *consoleContent) {
+	request := requests.Request{
+		SrcAddr:       content.srcAddr,
+		SrcPort:       content.srcPort,
+		DstAddr:       content.dstAddr,
+		DstPort:       content.dstPort,
+		Method:        content.method,
+		Ts:            content.ts,
+		StatusCode:    content.statusCode,
+		ContentLength: content.contentLength,
+		Url:           content.url,
+		UserAgent:           content.UserAgent,
+		Body:           content.Body,
+	}
+	request.InsertConsoleLog()
+	//database.InsertConsoleLog(request)
+
 	if t.showMoreDetail {
 		color.Printf("%-23s %-42s %-5d %-7s %-5s %s\n",
 			color.MethodColor(content.method),

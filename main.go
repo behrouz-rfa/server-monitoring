@@ -36,7 +36,7 @@ func main() {
 	session.Configure(config.Session)
 
 	// Connect to database
-	//database.Connect(config.Database)
+	database.Connect(config.Database)
 
 	translate.Config("fa_IR")
 	//websockets.Setup()
@@ -50,6 +50,8 @@ func main() {
 		plugin.NoEscape(),
 		plugin.Ranges(),
 		plugin.Add(),
+		plugin.GB(),
+		plugin.Uptime(),
 		plugin.Sub(),
 		plugin.PrettyTime(),
 		plugin.Translate(config.View),

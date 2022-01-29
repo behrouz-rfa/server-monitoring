@@ -23,6 +23,9 @@ require (
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/rs/zerolog v1.26.1
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18
+	github.com/shirou/gopsutil v3.21.11+incompatible
+	github.com/tklauser/go-sysconf v0.3.9 // indirect
+	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	go.mongodb.org/mongo-driver v1.8.2
 	go.uber.org/zap v1.20.0
 	golang.org/x/crypto v0.0.0-20220128200615-198e4374d7ed
