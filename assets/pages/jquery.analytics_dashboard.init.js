@@ -145,7 +145,7 @@ var optionsCircle = {
         },
     },
     series: [0],
-    labels: [ 'Usage'],
+    labels: ['Usage'],
     legend: {
         show: true,
         position: 'bottom',
@@ -217,7 +217,79 @@ var optionsCircle2 = {
         },
     },
     series: [0],
-    labels: [ 'Usage'],
+    labels: ['Usage'],
+    legend: {
+        show: true,
+        position: 'bottom',
+        offsetX: -40,
+        offsetY: -10,
+        formatter: function (val, opts) {
+            return val + " - " + opts.w.globals.series[opts.seriesIndex] + '%'
+        }
+    },
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
+            gradientToColors: ["#ffb822", "#5d78ff", "#34bfa3"]
+        }
+    },
+    stroke: {
+        lineCap: 'round'
+    },
+}
+var optionsCircle3 = {
+    chart: {
+        type: 'radialBar',
+        height: 240,
+        offsetY: -30,
+        offsetX: 20,
+        dropShadow: {
+            enabled: true,
+            top: 5,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            blur: 5,
+            color: '#b6c2e4',
+            opacity: 0.35
+        },
+    },
+    plotOptions: {
+        radialBar: {
+            inverseOrder: true,
+            hollow: {
+                margin: 5,
+                size: '55%',
+                background: 'transparent',
+            },
+            track: {
+                show: true,
+                background: '#ddd',
+                strokeWidth: '10%',
+                opacity: 1,
+                margin: 5, // margin is in pixels
+            },
+
+            dataLabels: {
+                name: {
+                    fontSize: '18px',
+                },
+                value: {
+                    fontSize: '16px',
+                    color: '#50649c',
+                },
+            }
+        },
+    },
+    series: [0, 0, 0],
+    labels: ['Total', 'Available', 'Used'],
     legend: {
         show: true,
         position: 'bottom',
@@ -249,7 +321,8 @@ var chartCircle = new ApexCharts(document.querySelector('#circlechart'), options
 chartCircle.render();
 var circlechartMempru = new ApexCharts(document.querySelector('#circlechartMempru'), optionsCircle2);
 circlechartMempru.render();
-
+var memoryUses = new ApexCharts(document.querySelector('#ana_device'), optionsCircle3);
+memoryUses.render();
 
 var iteration = 11
 
@@ -262,45 +335,64 @@ function getRangeRandom(yrange) {
     return Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min
 }
 
-window.setInterval(function () {
+//
+// window.setInterval(function () {
+//
+//     iteration++;
+//
+//     // $.ajax({
+//     //     url: "admin/cpuinfo",
+//     //     type: 'GET',
+//     //     context: this,
+//     //     success: function (response, textStatus, jQxhr) {
+//     //         const events = [];
+//     //         chartCircle.updateSeries([ response])
+//     //     },
+//     //     error: function (jqXhr, textStatus, errorThrown) {
+//     //
+//     //         console.log(errorThrown);
+//     //     }
+//     // });
+//
+//     // $.ajax({
+//     //     url: "admin/mem-cpu",
+//     //     type: 'GET',
+//     //     context: this,
+//     //     success: function (response, textStatus, jQxhr) {
+//     //         const events = [];
+//     //         console.log(response.usedPercent)
+//     //         chartCircle.updateSeries([response.cpu])
+//     //         circlechartMempru.updateSeries([parseInt(response.memory)])
+//     //     },
+//     //     error: function (jqXhr, textStatus, errorThrown) {
+//     //
+//     //         console.log(errorThrown);
+//     //     }
+//     // });
+//
+//
+// }, 3000)
 
-    iteration++;
 
-    // $.ajax({
-    //     url: "admin/cpuinfo",
-    //     type: 'GET',
-    //     context: this,
-    //     success: function (response, textStatus, jQxhr) {
-    //         const events = [];
-    //         chartCircle.updateSeries([ response])
-    //     },
-    //     error: function (jqXhr, textStatus, errorThrown) {
-    //
-    //         console.log(errorThrown);
-    //     }
-    // });
+var randomizeArray = function (arg) {
+    var array = arg.slice();
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
-    $.ajax({
-        url: "admin/mem-cpu",
-        type: 'GET',
-        context: this,
-        success: function (response, textStatus, jQxhr) {
-            const events = [];
-            console.log(response.usedPercent)
-            chartCircle.updateSeries([ response.cpu])
-            circlechartMempru.updateSeries([ parseInt(response.memory)])
-        },
-        error: function (jqXhr, textStatus, errorThrown) {
+    while (0 !== currentIndex) {
 
-            console.log(errorThrown);
-        }
-    });
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
 
-}, 3000)
+    return array;
+}
 
-
-// saprkline chart
+// data for the sparklines that appear below header area
+var sparklineData = [47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46];
 
 
 var dash_spark_1 = {
@@ -342,21 +434,25 @@ var dash_spark_1 = {
     series: [{
         data: [4, 8, 5, 10, 4, 16, 5, 11, 6, 11, 30, 10, 13, 4, 6, 3, 6]
     }],
-    yaxis: {
-        min: 0
-    },
     colors: ['#2c77f4'],
 }
 new ApexCharts(document.querySelector("#dash_spark_1"), dash_spark_1).render();
+var data = [{
+    data: []
+}]
 
-
-//Device-widget
-
-
-var options1 = {
+var spark2 = {
     chart: {
-        height: 250,
-        type: 'donut',
+        id: 'realtime',
+        height: 350,
+        type: 'line',
+        animations: {
+            enabled: true,
+            easing: 'linear',
+            dynamicAnimation: {
+                speed: 1000
+            }
+        },
         dropShadow: {
             enabled: true,
             top: 10,
@@ -365,81 +461,85 @@ var options1 = {
             right: 0,
             blur: 2,
             color: '#b6c2e4',
-            opacity: 0.15
+            opacity: 0.35
         },
     },
-    plotOptions: {
-        pie: {
-            donut: {
-                size: '85%'
-            }
+
+    stroke: {
+        width: 2,
+        curve: 'smooth'
+    },
+    fill: {
+        opacity: 0.2,
+    },
+    series: data,
+    yaxis: {
+        min: 0
+    },
+    colors: ['#fbb624'],
+    title: {
+        text: 'Trafice ;ive',
+        offsetX: 20,
+        style: {
+            fontSize: '24px'
         }
     },
-    dataLabels: {
-        enabled: false,
-    },
-
-    series: [],
-    legend: {
-        show: true,
-        position: 'bottom',
-        horizontalAlign: 'center',
-        verticalAlign: 'middle',
-        floating: false,
-        fontSize: '14px',
-        offsetX: 0,
-        offsetY: -13
-    },
-    labels: ["Total", "Used", "Available"],
-    colors: ["#34bfa3", "#5d78ff", "#fd3c97"],
-
-    responsive: [{
-        breakpoint: 600,
-        options: {
-            plotOptions: {
-                donut: {
-                    customScale: 0.2
-                }
-            },
-            chart: {
-                height: 240
-            },
-            legend: {
-                show: false
-            },
-        }
-    }],
-
-    tooltip: {
-        y: {
-            formatter: function (val) {
-                return val + " %"
-            }
+    subtitle: {
+        text: 'Expenses',
+        offsetX: 20,
+        style: {
+            fontSize: '14px'
         }
     }
+}
+var lastDate = 0;
+
+
+traficChart = document.querySelector("#trafics")// ApexCharts(document.querySelector("#spark2"), dash_spark_1);
+// traficChart.render()
+
+var conn;
+var arraydata = []
+if (window["WebSocket"]) {
+    conn = new WebSocket("ws://" + document.location.host + "/ws");
+    conn.onopen = function () {
+        console.log("<p>Socket is open</p>");
+    };
+    conn.onclose = function (evt) {
+        var item = document.createElement("div");
+        item.innerHTML = "<b>Connection closed.</b>";
+        appendLog(item);
+    };
+    conn.onmessage = function (evt) {
+        // var messages = evt.data.split('\n');
+        try {
+            const result = JSON.parse(evt.data)
+            chartCircle.updateSeries([result.cpu])
+            circlechartMempru.updateSeries([parseInt(result.memory.usedPercent)])
+            const used = (result.memory.used * 100) / result.memory.total
+            const available = (result.memory.available * 100) / result.memory.total
+            memoryUses.updateSeries([100, parseInt(available), parseInt(used),])
+            let sendByte = 0
+
+
+            row = ""
+            for (let i = 0; i < result.netinfo.length; i++) {
+                row += "      <tr>\n" +
+                    "                    <th>"+result.netinfo[i].name+"</th>\n" +
+                    "                    <th>"+result.netinfo[i].bytesSent+"</th>\n" +
+                    "                    <th>"+result.netinfo[i].bytesRecv+"</th>\n" +
+                    "                </tr>"
+
+                // arraydata.push()
+            }
+            traficChart.innerHTML = row
+
+        } catch (e) {
+            console.log(e)
+        }
+
+
+    };
+} else {
 
 }
-
-$.ajax({
-    url: "admin/memoryinfo",
-    type: 'GET',
-    context: this,
-    success: function (response, textStatus, jQxhr) {
-        const events = [];
-        console.log(response)
-        const used = (response.used * 100) / response.total
-        const available = (response.available * 100) / response.total
-        options1.series = [100,parseInt( available), parseInt(used),]
-        var chart = new ApexCharts(
-            document.querySelector("#ana_device"),
-            options1
-        );
-
-        chart.render();
-    },
-    error: function (jqXhr, textStatus, errorThrown) {
-
-        console.log(errorThrown);
-    }
-});
-

@@ -19,7 +19,7 @@ func TagHelper(v view.View) template.FuncMap {
 
 		if err != nil {
 			log.Println("JS Error:", err)
-			return template.HTML("<!-- JS Error: " + s + " -->")
+			return template.HTML("")
 		}
 
 		return template.HTML(`<script type="text/javascript" src="` + path + `"></script>`)

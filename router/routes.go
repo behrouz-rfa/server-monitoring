@@ -46,13 +46,16 @@ func NewRouter() *echo.Echo {
 	admin.GET("/memoryinfo", admincontrollers.IndexController.MemoryInfo)
 	admin.GET("/cpuinfo", admincontrollers.IndexController.CpuInfo)
 	admin.GET("/mem-cpu", admincontrollers.IndexController.CpuMemory)
+	admin.GET("/network", admincontrollers.NetworkController.Index)
 
+	e.GET("/ws", admincontrollers.IndexController.Ws)
 
 	e.GET("/user/login", admincontrollers.UserController.LoginGET)
 	e.POST("/user/login", admincontrollers.UserController.LoginPost)
 	e.GET("/user/register", admincontrollers.UserController.RegisterGET)
 	e.GET("/user/logout", admincontrollers.UserController.LogoutGET)
 	e.POST("/user/register", admincontrollers.UserController.RegisterPost)
+
 
 
 	e.Static("/assets", "assets")

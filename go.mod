@@ -11,6 +11,7 @@ require (
 	github.com/google/gopacket v1.1.19
 	github.com/gorilla/context v1.1.1
 	github.com/gorilla/sessions v1.2.1
+	github.com/gorilla/websocket v1.4.2
 	github.com/haisum/recaptcha v0.0.0-20170327142240-7d3b8053900e
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/josephspurrier/csrfbanana v0.0.0-20170308132943-2c49e3597176

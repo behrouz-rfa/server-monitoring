@@ -1,8 +1,24 @@
 package passhash
 
 import (
+	"bytes"
+	"encoding/gob"
+	"github.com/shirou/gopsutil/net"
 	"golang.org/x/crypto/bcrypt"
 )
+
+// Serialize serializes the block
+func Serialize(item net.IOCountersStat) []byte {
+	var result bytes.Buffer
+	encoder := gob.NewEncoder(&result)
+
+	err := encoder.Encode(item)
+	if err != nil {
+		return []byte("")
+	}
+
+	return result.Bytes()
+}
 
 // HashString returns a hashed string and an error
 func HashString(password string) (string, error) {
