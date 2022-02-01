@@ -15,6 +15,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+var filter = ""
+
 type captureManager struct {
 	connManager      sync.Map
 	chRecvTimeoutMsg chan *tcpConnection
@@ -26,15 +28,16 @@ func newCaptureManager() *captureManager {
 	}
 }
 
-func (t *captureManager) Run(devicenam, filter string) {
+func (t *captureManager) Run(devicenam, f string) {
+	filter = f
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	go t.checkConnectionTimeout(ctx)
 
 	//input := reader.NewRAWInput(flags.Options.InterfaceName, flags.Options.Port)
-	log.Info().Msgf("Listening [%s] with BPF filter: %s", flags.Options.InterfaceName, getBPFFilter())
-	packetSource, err := newPacketSource(devicenam, getBPFFilter())
+	log.Info().Msgf("Listening [%s] with BPF filter: %s", flags.Options.InterfaceName, filter)
+	packetSource, err := newPacketSource(devicenam, filter)
 	if err != nil {
 		log.Err(err).Msg("")
 		return
@@ -203,7 +206,7 @@ func getBPFFilter() string {
 	//	return "tcp"
 	//}
 
-	return fmt.Sprintf("dst 192.168.1.42 and port %d", 80)
+	return filter
 }
 
 // filter common use port

@@ -160,7 +160,7 @@ func Connect(d Info) {
 				{"password", hash},
 				{"tel", ""},
 				{"phone", ""},
-				{"interface", "ens33"},
+				{"interface", ""},
 				{"filter", "port 80"},
 				{"status", 1},
 			}

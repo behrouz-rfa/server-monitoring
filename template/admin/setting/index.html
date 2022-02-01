@@ -134,7 +134,7 @@
                                                 <div class="col-md-4">
                                                     <select class="form-control text-primary" name="interface" value="{{.setting.Interface}}">
                                                         {{ range $key, $e := .interfaces}}
-                                                          <option value="{{$e.Name}}">{{$e.Name}}</option>
+                                                          <option value="{{$e.Index}}">{{$e.Name}}</option>
                                                         {{end}}
                                                     </select>
                                                 </div>

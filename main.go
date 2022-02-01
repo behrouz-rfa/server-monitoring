@@ -19,6 +19,7 @@ import (
 	"runtime"
 	"server-monitoring/shared/jsonconfig"
 )
+
 func init() {
 	// Verbose logging with file name and line number
 	log.SetFlags(log.Lshortfile)
@@ -57,6 +58,7 @@ func main() {
 		plugin.Translate(config.View),
 		recaptcha.Plugin(),
 	)
+
 	//cron
 	//c := cron.New()
 	////c.AddFunc("*/1 * * * *", func() {

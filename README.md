@@ -15,7 +15,7 @@ It is possible to use your own template for notifications. The [golang template 
 
 ## Run on Docker
 
-Use the [official Docker image](https://hub.docker.com/r/koloooo/monhttp) to run monhttp in seconds.
+#Use the [official Docker image](https://hub.docker.com/r/koloooo/monhttp) to run monhttp in seconds.
 
 ``` shell
 #
@@ -27,6 +27,9 @@ when starting the container.
 ``` shell
 #
 ```
+## Use mongodb
+Use this tutorial to install MongoDB 5.0 Community Edition on LTS (long-term support) releases of Ubuntu Linux using the apt package manager.
+ use this link [`https://docs.mongodb.com/manual/installation/`](https://docs.mongodb.com/manual/installation/) for installation in your server.
 
 ## Use docker-compose
 
@@ -36,7 +39,7 @@ the password is `admin` too.
 
 ## Build it locally
 
-Make sure you have Go 1.15 and Node.js 14.15 installed on your computer. Clone the repository and execute the build
+Make sure you have Go 1.15 installed on your computer. Clone the repository and execute the build
 command.
 
 ``` shell
@@ -50,16 +53,16 @@ with `./server-monitoring`.
 
 ## Configuration
 
-After the initial setup, there is a config.env in the config folder. This file can be used to change or save the
+After the initial setup, there is a config.json in the config folder. This file can be used to change or save the
 configuration.
 
 | Key  | Value  | Description  |
 |---|---|---|
 | DATABASE_HOST | localhost  |   |
-| DATABASE_NAME |  monhttp |   |
-| DATABASE_PASSWORD |  top_secret |   |
-| DATABASE_PORT | 5432  |   |
-| DATABASE_USER | monhttp_user  |   |
+| DATABASE_NAME |  monitoring |   |
+| DATABASE_PASSWORD |  |   |
+| DATABASE_PORT |   |   |
+| DATABASE_USER |   |   |
 |   |   |   |
 | NOTIFIER |   |   |
 |   |   |   |

@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/shirou/gopsutil/net"
 	"net/http"
+	"runtime"
 	"server-monitoring/apps/admin/adminservice"
 	"server-monitoring/domain/settings"
 	"server-monitoring/shared/consts"
@@ -42,6 +43,7 @@ func (n settingController) Index(c echo.Context) error {
 		fmt.Println(err)
 	}
 	interfaces, err := net.Interfaces()
+
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -66,6 +68,7 @@ func (s settingController) PostSetting(c echo.Context) error {
 		s.Index(c)
 		return nil
 	}
+	interfaces, err := net.Interfaces()
 
 	website := c.FormValue("website")
 	password := c.FormValue("password")
@@ -77,7 +80,8 @@ func (s settingController) PostSetting(c echo.Context) error {
 	keyword := c.FormValue("keyword")
 	tel := c.FormValue("tel")
 	phone := c.FormValue("phone")
-	iface := c.FormValue("interface")
+	iface, _ := strconv.Atoi(c.FormValue("interface"))
+
 	filter := c.FormValue("filter")
 	languageId, _ := strconv.Atoi(c.FormValue("language_id"))
 
@@ -102,14 +106,29 @@ func (s settingController) PostSetting(c echo.Context) error {
 	}
 	setting.Status = 0
 	setting.Filter = filter
-	setting.Interface = iface
+	if runtime.GOOS == "windows" {
+		for _, stat := range interfaces {
+			if stat.Index == iface {
+				setting.Interface = stat.Addrs[0].Addr
+				break
+			}
+		}
+
+	} else {
+		for _, stat := range interfaces {
+			if stat.Index == iface {
+				setting.Interface = stat.Name
+				break
+			}
+		}
+	}
 
 	setting.Status = int8(status)
 
 	setting.LanguageId = languageId
 	setting.Keyword = keyword
 
-	err := adminservice.SettingService.Create(&setting)
+	err = adminservice.SettingService.Create(&setting)
 
 	if err != nil {
 		sess.AddFlash(view.Flash{Message: "failed to save", Class: view.FlashError})
