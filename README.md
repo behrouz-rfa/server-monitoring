@@ -5,7 +5,7 @@ Status Page for monitoring your websites and applications with graphs and analyt
 ## Run everywhere
 
 `server-monitoring` is written in Go(lang). All you need is the precompiled binary based on your operating system, and the
-HTML/CSS/Javascript files. You can even run `monhttp` on your Raspberry Pi.
+HTML/CSS/Javascript files. You can even run `server-monitoring` on your Raspberry Pi.
 
 ## Notifications
 
@@ -68,14 +68,10 @@ configuration.
 |   |   |   |
 | SERVER_PORT | 8081  |   |
 |   |   |   |
-| USERS | admin:admin,admin1:admin  | A list in the format "name:password" you can add here as many users as you want to  |
+| USERS | admin:123456,  | A list in the format "name:password" you can add here as many users as you want to  |
 |   |   |   |
 | SCHEDULER_ENABLED  | true  | If false, then no data is collected  |
 | SCHEDULER_NUMBER_OF_WORKERS  | 5  | How many "workers" should process the services asynchronously. If there are many services, the value should be increased.  |
 
 
-You can also use environment variables to configure `monhttp`. Environment variables override the values from the `config.env` file.
-
-## Import
-
-A sample file for CSV import can be found in the folder ["/examples/csv"](https://github.com/koloo91/monhttp/tree/main/examples/csv). More information is available in the wiki.
+You can also use environment variables to configure `server-monitoring`. Environment variables override the values from the `config.json` file.
