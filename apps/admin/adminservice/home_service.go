@@ -32,6 +32,7 @@ func (h homeService) NetInfo() (string, error) {
 	for index, v := range info {
 		fmt.Printf("%v:%v send:%v recv:%v\n", index, v, v.BytesSent, v.BytesRecv)
 	}
+
 	return "", nil
 }
 
@@ -81,9 +82,9 @@ func (h homeService) CpuInfo() (int, error) {
 	percent, _ := cpu.Percent(time.Second, false)
 	var usage float64
 	for _, f := range percent {
-		usage+=f
+		usage += f
 	}
-	return int(usage),nil
+	return int(usage), nil
 
 }
 

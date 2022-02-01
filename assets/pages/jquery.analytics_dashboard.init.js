@@ -317,12 +317,17 @@ var optionsCircle3 = {
     },
 }
 
-var chartCircle = new ApexCharts(document.querySelector('#circlechart'), optionsCircle);
-chartCircle.render();
-var circlechartMempru = new ApexCharts(document.querySelector('#circlechartMempru'), optionsCircle2);
-circlechartMempru.render();
-var memoryUses = new ApexCharts(document.querySelector('#ana_device'), optionsCircle3);
-memoryUses.render();
+try {
+    var chartCircle = new ApexCharts(document.querySelector('#circlechart'), optionsCircle);
+    chartCircle.render();
+    var circlechartMempru = new ApexCharts(document.querySelector('#circlechartMempru'), optionsCircle2);
+    circlechartMempru.render();
+    var memoryUses = new ApexCharts(document.querySelector('#ana_device'), optionsCircle3);
+    memoryUses.render();
+} catch (e) {
+
+}
+
 
 var iteration = 11
 
@@ -514,25 +519,39 @@ if (window["WebSocket"]) {
         // var messages = evt.data.split('\n');
         try {
             const result = JSON.parse(evt.data)
-            chartCircle.updateSeries([result.cpu])
-            circlechartMempru.updateSeries([parseInt(result.memory.usedPercent)])
-            const used = (result.memory.used * 100) / result.memory.total
-            const available = (result.memory.available * 100) / result.memory.total
-            memoryUses.updateSeries([100, parseInt(available), parseInt(used),])
-            let sendByte = 0
+            if (window.location.pathname === "/admin/" || window.location.pathname === "/admin") {
+                if (chartCircle) {
+                    chartCircle.updateSeries([result.cpu])
+                }
 
+                if (circlechartMempru) {
+                    circlechartMempru.updateSeries([parseInt(result.memory.usedPercent)])
+                }
 
-            row = ""
-            for (let i = 0; i < result.netinfo.length; i++) {
-                row += "      <tr>\n" +
-                    "                    <th>"+result.netinfo[i].name+"</th>\n" +
-                    "                    <th>"+result.netinfo[i].bytesSent+"</th>\n" +
-                    "                    <th>"+result.netinfo[i].bytesRecv+"</th>\n" +
-                    "                </tr>"
+                if (memoryUses) {
+                    const used = (result.memory.used * 100) / result.memory.total
+                    const available = (result.memory.available * 100) / result.memory.total
+                    memoryUses.updateSeries([100, parseInt(available), parseInt(used),])
 
-                // arraydata.push()
+                }
             }
-            traficChart.innerHTML = row
+            let sendByte = 0
+            console.log(window.location.pathname)
+            if (window.location.pathname === "/admin/" || window.location.pathname === "/admin" || window.location.pathname === "/admin/network" || window.location.pathname === "/admin/network/") {
+                row = ""
+                for (let i = 0; i < result.netinfo.length; i++) {
+                    row += "      <tr>\n" +
+                        "                    <th>" + result.netinfo[i].name + "</th>\n" +
+                        "                    <th>" + bytesToSize(result.netinfo[i].bytesSent) + "</th>\n" +
+                        "                    <th>" + bytesToSize(result.netinfo[i].bytesRecv) + "</th>\n" +
+                        "                </tr>"
+
+                    // arraydata.push()
+                }
+
+                traficChart.innerHTML = row
+
+            }
 
         } catch (e) {
             console.log(e)
@@ -542,4 +561,15 @@ if (window["WebSocket"]) {
     };
 } else {
 
+}
+const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+function bytesToSize(x) {
+    let l = 0, n = parseInt(x / 1024, 10) || 0;
+
+    while (n >= 1024 && ++l) {
+        n = n / 1024;
+    }
+
+    return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l]);
 }

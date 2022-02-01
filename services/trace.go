@@ -28,7 +28,7 @@ func Run() {
 	for _, device := range devices {
 
 		for _, address := range device.Addresses {
-			ip:=fmt.Sprintf("%s",address.IP)
+			ip := fmt.Sprintf("%s", address.IP)
 			if reflect.DeepEqual(ip, "192.168.1.42") {
 				devuceName = device.Name
 				break
@@ -54,7 +54,7 @@ func Run() {
 	//}
 	//packet.Run()
 	output.Init()
-	capture.Start("192.168.1.42",filter)
+	capture.Start("ens33", filter)
 	//httass.Run(devuceName)
 	//http_log.Run("",devuceName,"","")
 }

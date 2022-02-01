@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"server-monitoring/domain/nodes"
+	"server-monitoring/shared/passhash"
 	loogers "server-monitoring/utils/looger"
 	"sync"
 
@@ -143,6 +144,29 @@ func Connect(d Info) {
 		}
 		if err := db.CreateCollection(ctx, "nodes"); err != nil {
 			fmt.Println(err)
+		}
+		if err := db.CreateCollection(ctx, "settings"); err != nil {
+			fmt.Println(err)
+		} else {
+			hash, _ := passhash.HashString("123456")
+			setting := bson.D{
+				{"site_name", "Server monitoring"},
+				{"language_name", "en"},
+				{"language_id", 1},
+				{"meta", ""},
+				{"keyword", ""},
+				{"email", "mehrdadparsa87@gmail.com"},
+				{"email", "mehrdadparsa87@gmail.com"},
+				{"password", hash},
+				{"tel", ""},
+				{"phone", ""},
+				{"interface", "ens33"},
+				{"filter", "port 80"},
+				{"status", 1},
+			}
+			if _, err := db.Collection("settings").InsertOne(ctx, setting); err != nil {
+				fmt.Println(err)
+			}
 		}
 
 		//defer func(Mongo *mongo.Client, ctx context.Context) {

@@ -30,8 +30,7 @@ func NewRouter() *echo.Echo {
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
 	}))
 
-
-	en := casbin.NewEnforcer("config/casbin_auth_model.conf",  "config"+string(os.PathSeparator)+"policy.csv")
+	en := casbin.NewEnforcer("config/casbin_auth_model.conf", "config"+string(os.PathSeparator)+"policy.csv")
 
 	enforcer := Enforcer{enforcer: en}
 
@@ -47,6 +46,8 @@ func NewRouter() *echo.Echo {
 	admin.GET("/cpuinfo", admincontrollers.IndexController.CpuInfo)
 	admin.GET("/mem-cpu", admincontrollers.IndexController.CpuMemory)
 	admin.GET("/network", admincontrollers.NetworkController.Index)
+	admin.GET("/setting", admincontrollers.SettingController.Index)
+	admin.POST("/setting", admincontrollers.SettingController.PostSetting)
 
 	e.GET("/ws", admincontrollers.IndexController.Ws)
 
@@ -55,8 +56,6 @@ func NewRouter() *echo.Echo {
 	e.GET("/user/register", admincontrollers.UserController.RegisterGET)
 	e.GET("/user/logout", admincontrollers.UserController.LogoutGET)
 	e.POST("/user/register", admincontrollers.UserController.RegisterPost)
-
-
 
 	e.Static("/assets", "assets")
 
@@ -77,7 +76,7 @@ func LoadHTTP() *echo.Echo {
 }
 
 type Enforcer struct {
-enforcer *casbin.Enforcer
+	enforcer *casbin.Enforcer
 }
 
 func (e *Enforcer) Enforce(next echo.HandlerFunc) echo.HandlerFunc {
@@ -95,8 +94,6 @@ func (e *Enforcer) Enforce(next echo.HandlerFunc) echo.HandlerFunc {
 			userVisi.Ip = clientIP
 			adminservice.VisitedService.Insert(&userVisi)
 		}()
-
-
 
 		if sess.Values[consts.IS_SUPER_ADMIN] != nil {
 			method := c.Request().Method

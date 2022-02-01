@@ -18,195 +18,142 @@
 {{define "content"}}
 
 
-    <div class="container-fluid">
+<div class="container-fluid" dir="ltr">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Pages</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ol><!--end breadcrumb-->
+                </div><!--end /div-->
+                <h4 class="page-title">Profile</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body  met-pro-bg">
+                    <div class="met-profile">
+                        <div class="row">
+                            <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+                                <div class="met-profile-main">
+                                    <div class="met-profile-main-pic">
+                                        <img src="../assets/images/users/user-4.jpg" alt="" class="rounded-circle">
+                                        <span class="fro-profile_main-pic-change">
+                                                            <i class="fas fa-camera"></i>
+                                                        </span>
+                                    </div>
+                                    <div class="met-profile_user-detail">
+                                        <h5 class="met-user-name">Rosa Dodson</h5>
+                                        <p class="mb-0 met-user-name-post">UI/UX Designer</p>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-4 ml-auto">
+                                <ul class="list-unstyled personal-detail">
+                                    <li class=""><i class="dripicons-phone mr-2 text-info font-18"></i> <b> phone </b> : +91 23456 78910</li>
+                                    <li class="mt-2"><i class="dripicons-mail text-info font-18 mt-2 mr-2"></i> <b> Email </b> : mannat.theme@gmail.com</li>
+                                    <li class="mt-2"><i class="dripicons-location text-info font-18 mt-2 mr-2"></i> <b>Location</b> : USA</li>
+                                </ul>
+                                <div class="button-list btn-social-icon">
+                                    <button type="button" class="btn btn-blue btn-round">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="page-title-box">
-                    <div class="float-right">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Others</a></li>
-                            <li class="breadcrumb-item active">Wizard</li>
-                        </ol>
-                    </div>
-                    <h4 class="page-title">{{gettext "Website Configuration"}}</h4>
-                </div><!--end page-title-box-->
-            </div><!--end col-->
-        </div>
-        <!-- end page title end breadcrumb -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
+                                    <button type="button" class="btn btn-secondary btn-round ml-2">
+                                        <i class="fab fa-twitter"></i>
+                                    </button>
 
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#home" role="tab"
-                                   aria-selected="true">{{gettext "Configureion"}}</a>
-                            </li>
+                                    <button type="button" class="btn btn-pink btn-round  ml-2">
+                                        <i class="fab fa-dribbble"></i>
+                                    </button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end f_profile-->
+                </div><!--end card-body-->
+                <div class="card-body">
+                    <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
 
-                        </ul>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="settings_detail_tab" data-toggle="pill" href="#settings_detail">Settings</a>
+                        </li>
+                    </ul>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content detail-list" id="pills-tabContent">
 
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane p-3 active" id="home" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="mt-0 header-title">{{gettext "Configureion"}}</h4>
-                                                <p class="text-muted mb-3">{{gettext "All configureion for website are here!"}}
-                                                </p>
-                                                <form method="post">
-                                                    <div class="row">
-
-                                                        <div class="col-lg-6">
-
-
-                                                            <div class="form-group row">
-                                                                <label for="website-text-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Website Name"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="text"
-                                                                           name="website"
-                                                                           value="{{.setting.SiteName}}"
-                                                                           id="website-text-input">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="email-email-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Email"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="email"
-                                                                           name="email"
-                                                                           value="{{.setting.Email}}"
-                                                                           id="email-email-input">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="tel-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Telephone"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="tel" name="tel"
-                                                                           value="{{.setting.Tel}}"
-                                                                           id="tel-input">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="phone-tel-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Phone"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="tel" name="phone"
-                                                                           value="{{.setting.Phone}}"
-                                                                           id="phone-tel-input">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="password-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Password"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="password"
-                                                                           name="password" value="hunter2"
-                                                                           id="password-input">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label text-right">{{gettext "Default Language"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <select name="language_id" class="form-control">
-                                                                        {{$lang :=.setting.LanguageId}}
-                                                                        {{range $n := .languageList}}
-
-                                                                            <option {{if eq $n.Id $lang}} selected {{end}}
-                                                                                    value="{{$n.Id}}">{{$n.Language}}</option>
-                                                                        {{end}}
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group row">
-
-                                                                <label for="example-text-input-sm"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Webiste Status"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="form-check-inline my-1">
-                                                                        <div class="custom-control custom-radio">
-                                                                            <input type="radio" id="customRadio7"
-                                                                                   name="customRadio"
-                                                                                   value="1"
-                                                                                   {{if eq .setting.Status 1}}checked{{end}}
-                                                                                   class="custom-control-input">
-                                                                            <label class="custom-control-label"
-                                                                                   for="customRadio7">{{gettext "Enabled"}}</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-check-inline my-1">
-                                                                        <div class="custom-control custom-radio">
-                                                                            <input type="radio" id="customRadio8"
-                                                                                   name="customRadio"
-                                                                                   value="0"
-                                                                                   {{if eq .setting.Status 0}}checked{{end}}
-                                                                                   class="custom-control-input">
-                                                                            <label class="custom-control-label"
-                                                                                   for="customRadio8">{{gettext "Disabled"}}</label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-                                                            <input type="hidden" name="csrf" value="{{.csrf_token}}">
-
-                                                            <button type="submit"
-                                                                    class="btn btn-primary">{{gettext "Save"}}</button>
-
-                                                        </div>
-
-
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group row">
-                                                                <label for="keyword-text-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Keyword"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="text"
-                                                                           name="keyword"
-                                                                           id="keyword-text-input"
-                                                                           value="{{.setting.Keyword}}">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group row">
-                                                                <label for="meta-text-input"
-                                                                       class="col-sm-2 col-form-label text-right">{{gettext "Meta Description"}}</label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control" type="text"
-                                                                           name="meta"
-                                                                           value="{{.setting.Meta}}"
-                                                                           id="meta-text-input">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </form>
-                                            </div><!--end card-body-->
-                                        </div><!--end card-->
-                                    </div><!--end col-->
+                <div class="tab-pane fade show active" id="settings_detail">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-10 mx-auto">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        <form class="form-horizontal form-material mb-0" method="post">
+                                            <input type="hidden" value="{{.settingid}}" name="id">
+                                            <input type="hidden" name="csrf" value="{{.csrf_token}}">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <input type="email" placeholder="Email" class="form-control text-primary" value="{{.setting.Email}}" name="email" id="example-email">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="password" placeholder="password" name="password" class="form-control text-primary">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="password" placeholder="Re-password" name="password-re" class="form-control  text-primary">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Meta" class="form-control text-primary" value="{{.setting.Meta}}" name="meta" >
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="language name" name="language_name" value="{{.setting.LanguageName}}" class="form-control text-primary">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Site Name" value="{{.setting.SiteName}}" name="website" class="form-control text-primary">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Phone No" value="{{.setting.Phone}}" name="phone" class="form-control text-primary">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" name="filter" placeholder="Phone No" value="{{.setting.Filter}}" class="form-control text-primary">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-control text-primary" name="interface" value="{{.setting.Interface}}">
+                                                        {{ range $key, $e := .interfaces}}
+                                                          <option value="{{$e.Name}}">{{$e.Name}}</option>
+                                                        {{end}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea rows="5" placeholder="Message" name="message" class="form-control">{{.setting.Message}}</textarea>
+                                                <button class="btn btn-gradient-primary btn-sm text-light px-4 mt-3 float-right mb-0">Update Profile</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
+                        </div> <!--end col-->
+                    </div><!--end row-->
+                </div><!--end settings detail-->
+            </div><!--end tab-content-->
 
-                        </div>
-                    </div><!--end card-body-->
-                </div>
+        </div><!--end col-->
+    </div><!--end row-->
 
-            </div><!--end col-->
-        </div><!--end row-->
-
-
-    </div><!-- container -->
-
-
+</div><!-- container -->
 {{end}}
