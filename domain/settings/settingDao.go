@@ -18,6 +18,7 @@ func (l *Setting) Update() error {
 		{"password", l.Password},
 		{"tel", l.Tel},
 		{"phone", l.Phone},
+		{"username", l.Username},
 		{"interface", l.Interface},
 		{"filter", l.Filter},
 		{"status", l.Status},
@@ -33,6 +34,15 @@ func (l *Setting) Update() error {
 func (l *Setting) FindFist() error {
 	coll := database.Mongo.Database("monitoring").Collection("settings")
 	if err := coll.FindOne(context.Background(), bson.M{}).Decode(&l); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (l *Setting) FindByUserName() error {
+	coll := database.Mongo.Database("monitoring").Collection("settings")
+	if err := coll.FindOne(context.Background(), bson.M{"username": l.Username}).Decode(&l); err != nil {
 		return err
 	}
 

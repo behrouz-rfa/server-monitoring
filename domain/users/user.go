@@ -2,28 +2,30 @@ package users
 
 import (
 	"errors"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"math/rand"
 	"server-monitoring/utils/rest_error"
 	"strconv"
 )
 
 type User struct {
-	Id             int64  `json:"id"`
-	FirstName      string `json:"first_name"`
-	UserName       string `json:"username"`
-	Password       string `json:"password"`
-	Email          string `json:"email"`
-	LastName       string `json:"last_name"`
-	RealName       string `json:"real_name"`
-	ProfileImageId string `json:"profile_image_id"`
-	Status         int8   `json:"status"`
-	Gender         int8   `json:"gender"`
-	IsTeacher      int8   `json:"is_teacher"`
-	IsSuperAdmin   int8   `json:"is_super_admin"`
-	PhoneNumber    string `json:"phone_number"`
-	VerifyCode     string `json:"verify_code"`
-	CreatedAt      string `json:"created_at"`
-	UpdatedAt      string `json:"updated_at"`
+	ID             primitive.ObjectID `bson:"_id,omitempty"`
+	Id             int64              `bson:"id"`
+	FirstName      string             `bson:"first_name"`
+	UserName       string             `bson:"username"`
+	Password       string             `bson:"password"`
+	Email          string             `bson:"email"`
+	LastName       string             `bson:"last_name"`
+	RealName       string             `bson:"real_name"`
+	ProfileImageId string             `bson:"profile_image_id"`
+	Status         int8               `bson:"status"`
+	Gender         int8               `bson:"gender"`
+	IsTeacher      int8               `bson:"is_teacher"`
+	IsSuperAdmin   int8               `bson:"is_super_admin"`
+	PhoneNumber    string             `bson:"phone_number"`
+	VerifyCode     string             `bson:"verify_code"`
+	CreatedAt      string             `bson:"created_at"`
+	UpdatedAt      string             `bson:"updated_at"`
 }
 
 func (u *User) Validate() rest_error.RestErr {
@@ -40,4 +42,3 @@ func (u *User) ValidatePhone() rest_error.RestErr {
 	}
 	return nil
 }
-

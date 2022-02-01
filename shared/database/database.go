@@ -148,6 +148,14 @@ func Connect(d Info) {
 		if err := db.CreateCollection(ctx, "settings"); err != nil {
 			fmt.Println(err)
 		} else {
+			_, _ = db.Collection("settings").Indexes().CreateOne(
+				context.Background(),
+				mongo.IndexModel{
+					Keys:    bson.D{{Key: "username", Value: 1}},
+					Options: options.Index().SetUnique(true),
+				},
+			)
+
 			hash, _ := passhash.HashString("123456")
 			setting := bson.D{
 				{"site_name", "Server monitoring"},
@@ -156,13 +164,14 @@ func Connect(d Info) {
 				{"meta", ""},
 				{"keyword", ""},
 				{"email", "mehrdadparsa87@gmail.com"},
-				{"email", "mehrdadparsa87@gmail.com"},
+				{"username", "admin"},
 				{"password", hash},
 				{"tel", ""},
 				{"phone", ""},
 				{"interface", ""},
 				{"filter", "port 80"},
 				{"status", 1},
+				{"is_super_admin", 1},
 			}
 			if _, err := db.Collection("settings").InsertOne(ctx, setting); err != nil {
 				fmt.Println(err)

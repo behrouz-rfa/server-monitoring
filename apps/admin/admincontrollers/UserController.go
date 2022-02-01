@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	Jwtconfig "server-monitoring/domain/Jwt"
+	"server-monitoring/domain/settings"
 
 	"server-monitoring/apps/admin/adminservice"
 	"server-monitoring/domain/model"
@@ -21,6 +22,7 @@ import (
 	"strconv"
 	"time"
 )
+
 const (
 	// Name of the session variable that tracks login attempts
 	sessLoginAttempt = "login_attempt"
@@ -104,7 +106,6 @@ func (u userController) LoginGET(c echo.Context) error {
 	return nil
 }
 
-
 func (u userController) LoginPost(c echo.Context) error {
 	// Get session
 	sess := session.Instance(c.Request())
@@ -117,7 +118,7 @@ func (u userController) LoginPost(c echo.Context) error {
 	}
 
 	// Validate with required fields
-	if validate, missingField := view.Validate(c.Request(), []string{"email", "password"}); !validate {
+	if validate, missingField := view.Validate(c.Request(), []string{"username", "password"}); !validate {
 		sess.AddFlash(view.Flash{"Field missing: " + missingField, view.FlashError})
 		sess.Save(c.Request(), c.Response())
 		u.LoginGET(c)
@@ -125,13 +126,13 @@ func (u userController) LoginPost(c echo.Context) error {
 	}
 
 	// Form values
-	email := c.FormValue("email")
+	username := c.FormValue("username")
 	password := c.FormValue("password")
 
-	var user users.User
-	user.Email = email
+	var user settings.Setting
+	user.Username = username
 	// Get database result
-	err := adminservice.AdminUserService.Get(&user)
+	err := adminservice.SettingService.Login(&user)
 
 	// Determine if user exists
 	if err == model.ErrNoResult {
@@ -150,15 +151,14 @@ func (u userController) LoginPost(c echo.Context) error {
 			sess.Save(c.Request(), c.Response())
 		} else {
 
-
 			session.Empty(sess)
 			sess.AddFlash(view.Flash{"Login successful!", view.FlashSuccess})
-			sess.Values[consts.USER_ID] = user.Id
+			sess.Values[consts.USER_ID] = user.ID.String()
 			if user.IsSuperAdmin == consts.IS_SUPER_ADMIN {
 				// Login successfully
 				// Set custom claims
 				claims := &Jwtconfig.JwtCustomClaims{
-					user.FirstName,
+					user.Username,
 					true,
 					jwt.StandardClaims{
 						ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
@@ -178,9 +178,9 @@ func (u userController) LoginPost(c echo.Context) error {
 				sess.Values[consts.TOKEN] = t
 			}
 			sess.Values[consts.USER_EMAIL] = user.Email
-			sess.Values[consts.USER_MAME] = user.UserName
+			sess.Values[consts.USER_MAME] = user.Username
 
-			sess.Values[consts.FUll_NAME] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
+			sess.Values[consts.FUll_NAME] = fmt.Sprintf("%s", user.Username)
 			sess.Save(c.Request(), c.Response())
 			if user.IsSuperAdmin == consts.IS_SUPER_ADMIN {
 				http.Redirect(c.Response(), c.Request(), "/admin", http.StatusFound)
@@ -190,7 +190,7 @@ func (u userController) LoginPost(c echo.Context) error {
 			return nil
 		}
 	} else {
-	//loginAttempt(sess)
+		//loginAttempt(sess)
 		sess.AddFlash(view.Flash{"Password is incorrect - Attempt: " + fmt.Sprintf("%v", sess.Values[sessLoginAttempt]), view.FlashWarning})
 		sess.Save(c.Request(), c.Response())
 	}
@@ -275,6 +275,6 @@ func loginAttempt(sess *sessions.Session) {
 	if sess.Values[sessLoginAttempt] == nil {
 		//sess.Values[sessLoginAttempt] = 1
 	} else {
-	//	sess.Values[sessLoginAttempt] = sess.Values[sessLoginAttempt].(int) + 1
+		//	sess.Values[sessLoginAttempt] = sess.Values[sessLoginAttempt].(int) + 1
 	}
 }

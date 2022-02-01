@@ -18,7 +18,7 @@ const (
 	queryFindUserByEmail = "SELECT id ,  COALESCE(phone_number ,'') as phone_number,username, email ,password,COALESCE(first_name, '') as first_name, COALESCE(last_name, '') as last_name ,status,is_super_admin FROM user WHERE email = ? AND status = 1;"
 	queryFindUserByID    = "SELECT id ,  COALESCE(phone_number ,'') as phone_number,username, email ,password,COALESCE(first_name, '') as first_name, COALESCE(last_name, '') as last_name ,status,is_super_admin FROM user WHERE id = ? AND status = 1;"
 	querySelectUser      = " SELECT id ,  COALESCE(phone_number ,'') as phone_number,username, email ,password,COALESCE(first_name, '') as first_name, COALESCE(last_name, '') as last_name ,status,is_super_admin FROM user LIMIT ?,?;"
-	LimitOffset          =20
+	LimitOffset          = 20
 )
 
 func (u *User) Register(phone string) rest_error.RestErr {
@@ -122,6 +122,7 @@ func (u *User) UserByIdC(userid int64, work chan<- User, wg *sync.WaitGroup) err
 }
 
 func (u *User) CreateUserWithPassword() error {
+
 	smt, err := databases.Client.Prepare(queryInsertUserPass)
 	if err != nil {
 		loogers.Error("Error while preparing find user", err)
@@ -157,10 +158,10 @@ func (u *User) FindAll(pageNumber int) (*model.Pagination, error) {
 	if pageNumber == 1 {
 		startItem = 0
 	} else {
-		startItem = (pageNumber -1)* LimitOffset
+		startItem = (pageNumber - 1) * LimitOffset
 	}
 	//run query with params if params exists
-	rows, errRow := stmt.Query( startItem, LimitOffset)
+	rows, errRow := stmt.Query(startItem, LimitOffset)
 	if errRow != nil {
 		loogers.Error("error when trying to prepare select product", err)
 		return nil, model.ErrCode
@@ -190,17 +191,18 @@ func (u *User) FindAll(pageNumber int) (*model.Pagination, error) {
 	paginateProduct.Items = users
 	paginateProduct.CurrentPage = pageNumber //current page
 
-	paginateProduct.Count = count                            // number of items in table
-	paginateProduct.Pages = count / LimitOffset              // number if page
-	paginateProduct.Next = len(users) == LimitOffset      // check Next page exist
-	paginateProduct.Previous = startItem >= LimitOffset // check Previous page exist
-	paginateProduct.ItemPerPage = LimitOffset                // Item per page loaded
-	paginateProduct.ShowPerRow = paginateProduct.Pages > 10  // Item per page loaded
-	paginateProduct.LastPage = paginateProduct.Pages         // Item per page loaded
+	paginateProduct.Count = count                           // number of items in table
+	paginateProduct.Pages = count / LimitOffset             // number if page
+	paginateProduct.Next = len(users) == LimitOffset        // check Next page exist
+	paginateProduct.Previous = startItem >= LimitOffset     // check Previous page exist
+	paginateProduct.ItemPerPage = LimitOffset               // Item per page loaded
+	paginateProduct.ShowPerRow = paginateProduct.Pages > 10 // Item per page loaded
+	paginateProduct.LastPage = paginateProduct.Pages        // Item per page loaded
 	// Item per page loaded
 	paginateProduct.PagesList = paginateProduct.GetPages() // Item per page loaded
 	return &paginateProduct, nil
 }
+
 //get cpount Items
 func (*User) CountItemPerPage() (int, error) {
 	stmt, err := databases.Client.Prepare(selectCountItems)

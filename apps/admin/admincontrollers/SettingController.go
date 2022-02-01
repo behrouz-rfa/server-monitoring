@@ -72,6 +72,7 @@ func (s settingController) PostSetting(c echo.Context) error {
 
 	website := c.FormValue("website")
 	password := c.FormValue("password")
+	username := c.FormValue("username")
 	passwordRe := c.FormValue("password-re")
 	email := c.FormValue("email")
 	message := c.FormValue("message")
@@ -97,6 +98,7 @@ func (s settingController) PostSetting(c echo.Context) error {
 	}
 	setting.SiteName = website
 	setting.Email = email
+	setting.Username = username
 	setting.Meta = meta
 	setting.Tel = tel
 	setting.Phone = phone

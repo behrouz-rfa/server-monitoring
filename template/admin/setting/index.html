@@ -1,17 +1,15 @@
 {{define "title"}}Go Web App{{end}}
 {{define "cssextra"}}
-    {{CSS "assets/plugins/jquery-steps/jquery.steps.css"}}
-
+{{CSS "assets/plugins/jquery-steps/jquery.steps.css"}}
 
 
 {{end}}
 {{define "extrajs"}}
 
-    <!--Plugins-->
-    {{JS "assets/plugins/moment/moment.js"}}
-    {{JS "assets/plugins/jquery-steps/jquery.steps.min.js"}}
-    {{JS "assets//pages/jquery.form-wizard.init.js"}}
-
+<!--Plugins-->
+{{JS "assets/plugins/moment/moment.js"}}
+{{JS "assets/plugins/jquery-steps/jquery.steps.min.js"}}
+{{JS "assets//pages/jquery.form-wizard.init.js"}}
 
 
 {{end}}
@@ -57,9 +55,15 @@
                             </div><!--end col-->
                             <div class="col-lg-4 ml-auto">
                                 <ul class="list-unstyled personal-detail">
-                                    <li class=""><i class="dripicons-phone mr-2 text-info font-18"></i> <b> phone </b> : +91 23456 78910</li>
-                                    <li class="mt-2"><i class="dripicons-mail text-info font-18 mt-2 mr-2"></i> <b> Email </b> : mannat.theme@gmail.com</li>
-                                    <li class="mt-2"><i class="dripicons-location text-info font-18 mt-2 mr-2"></i> <b>Location</b> : USA</li>
+                                    <li class=""><i class="dripicons-phone mr-2 text-info font-18"></i> <b> phone </b> :
+                                        +91 23456 78910
+                                    </li>
+                                    <li class="mt-2"><i class="dripicons-mail text-info font-18 mt-2 mr-2"></i> <b>
+                                        Email </b> : mannat.theme@gmail.com
+                                    </li>
+                                    <li class="mt-2"><i class="dripicons-location text-info font-18 mt-2 mr-2"></i> <b>Location</b>
+                                        : USA
+                                    </li>
                                 </ul>
                                 <div class="button-list btn-social-icon">
                                     <button type="button" class="btn btn-blue btn-round">
@@ -82,7 +86,8 @@
                     <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
 
                         <li class="nav-item">
-                            <a class="nav-link active" id="settings_detail_tab" data-toggle="pill" href="#settings_detail">Settings</a>
+                            <a class="nav-link active" id="settings_detail_tab" data-toggle="pill"
+                               href="#settings_detail">Settings</a>
                         </li>
                     </ul>
                 </div><!--end card-body-->
@@ -104,44 +109,68 @@
                                             <input type="hidden" name="csrf" value="{{.csrf_token}}">
                                             <div class="form-group row">
                                                 <div class="col-md-4">
-                                                    <input type="email" placeholder="Email" class="form-control text-primary" value="{{.setting.Email}}" name="email" id="example-email">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input type="password" placeholder="password" name="password" class="form-control text-primary">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input type="password" placeholder="Re-password" name="password-re" class="form-control  text-primary">
+                                                    <input type="text" placeholder="Username"
+                                                           value="{{.setting.Username}}" name="username"
+                                                           class="form-control text-primary">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-4">
-                                                    <input type="text" placeholder="Meta" class="form-control text-primary" value="{{.setting.Meta}}" name="meta" >
+                                                    <input type="email" placeholder="Email"
+                                                           class="form-control text-primary" value="{{.setting.Email}}"
+                                                           name="email" id="example-email">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" placeholder="language name" name="language_name" value="{{.setting.LanguageName}}" class="form-control text-primary">
+                                                    <input type="password" placeholder="password" name="password"
+                                                           class="form-control text-primary">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" placeholder="Site Name" value="{{.setting.SiteName}}" name="website" class="form-control text-primary">
+                                                    <input type="password" placeholder="Re-password" name="password-re"
+                                                           class="form-control  text-primary">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-4">
-                                                    <input type="text" placeholder="Phone No" value="{{.setting.Phone}}" name="phone" class="form-control text-primary">
+                                                    <input type="text" placeholder="Meta"
+                                                           class="form-control text-primary" value="{{.setting.Meta}}"
+                                                           name="meta">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" name="filter" placeholder="Phone No" value="{{.setting.Filter}}" class="form-control text-primary">
+                                                    <input type="text" placeholder="language name" name="language_name"
+                                                           value="{{.setting.LanguageName}}"
+                                                           class="form-control text-primary">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <select class="form-control text-primary" name="interface" value="{{.setting.Interface}}">
+                                                    <input type="text" placeholder="Site Name"
+                                                           value="{{.setting.SiteName}}" name="website"
+                                                           class="form-control text-primary">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Phone No" value="{{.setting.Phone}}"
+                                                           name="phone" class="form-control text-primary">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" name="filter" placeholder="Phone No"
+                                                           value="{{.setting.Filter}}"
+                                                           class="form-control text-primary">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-control text-primary" name="interface"
+                                                            value="{{.setting.Interface}}">
                                                         {{ range $key, $e := .interfaces}}
-                                                          <option value="{{$e.Index}}">{{$e.Name}}</option>
+                                                        <option value="{{$e.Index}}">{{$e.Name}}</option>
                                                         {{end}}
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <textarea rows="5" placeholder="Message" name="message" class="form-control">{{.setting.Message}}</textarea>
-                                                <button class="btn btn-gradient-primary btn-sm text-light px-4 mt-3 float-right mb-0">Update Profile</button>
+                                                <textarea rows="5" placeholder="Message" name="message"
+                                                          class="form-control">{{.setting.Message}}</textarea>
+                                                <button class="btn btn-gradient-primary btn-sm text-light px-4 mt-3 float-right mb-0">
+                                                    Update Profile
+                                                </button>
                                             </div>
                                         </form>
                                     </div>

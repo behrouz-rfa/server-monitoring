@@ -7,11 +7,8 @@ import (
 
 	"os"
 	"server-monitoring/apps/admin/admincontrollers"
-	"server-monitoring/apps/admin/adminservice"
-	"server-monitoring/domain/visits"
 	"server-monitoring/shared/consts"
 	"server-monitoring/shared/session"
-	"server-monitoring/utils"
 )
 
 const CSRF_TOKEN_HEADER = "X-XSRF-TOKEN"
@@ -85,14 +82,14 @@ func (e *Enforcer) Enforce(next echo.HandlerFunc) echo.HandlerFunc {
 		sess := session.Instance(c.Request())
 
 		go func() {
-			clientIP := utils.FromRequest(c.Request())
-			var userVisi visits.Visit
+			//clientIP := utils.FromRequest(c.Request())
+
 			if sess.Values[consts.USER_ID] != nil {
-				userVisi.UserId = sess.Values[consts.USER_ID].(int64)
+				//userVisi.ID = sess.Values[consts.USER_ID]
 			}
-			userVisi.Url = c.Request().URL.Path
-			userVisi.Ip = clientIP
-			adminservice.VisitedService.Insert(&userVisi)
+			//userVisi.Url = c.Request().URL.Path
+			//userVisi.Ip = clientIP
+			//adminservice.VisitedService.Insert(&userVisi)
 		}()
 
 		if sess.Values[consts.IS_SUPER_ADMIN] != nil {
