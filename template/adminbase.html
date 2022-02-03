@@ -11,9 +11,7 @@
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
     <title>{{template "title" .}}</title>
 
-    {{CSS "assets/plugins/morris/morris.css"}}
 
-    {{CSS "assets/plugins/sweet-alert2/sweetalert2.min.css"}}
     {{CSS "assets/plugins/animate/animate.css"}}
 
 
@@ -36,7 +34,8 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.css" integrity="sha512-fSWkjL6trYj6KvdwIga30e8V4h9dgeLxTF2q2waiwwafEXD+GXo5LmPw7jmrSDqRun9gW5KBR+DjvWD+5TVr8A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.min.js" integrity="sha512-LwESE8nE3vcnoUWmYo6skVQ+BRT5UhqnPweGro7e22RSDLVwftCfFIPt+Ha2tm1Gg7RXvYp/jPyih3DUB06PwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 <body  dir="ltr">
@@ -141,13 +140,10 @@
 {{/*{{JS "assets/pages/jquery.projects_dashboard.init.js"}}*/}}
 
 
-{{JS "assets/plugins/sweet-alert2/sweetalert2.min.js"}}
-{{JS "assets/pages/jquery.sweet-alert.init.js"}}
-
 <!-- App js -->
 {{JS "assets/js/jquery.core.js"}}
 
-{{JS "assets/firbasejs/firbase_config.js"}}
+
 {{JS "assets/js/app.js"}}
 
 </body>
