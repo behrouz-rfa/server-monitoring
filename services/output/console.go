@@ -32,6 +32,7 @@ type consoleContent struct {
 	url           string
 	UserAgent     string
 	Body          []byte
+	Response      []byte
 }
 
 func (t *Console) Print(data protos.Protos, srcAddr string, srcPort int, dstAddr string, dstPort int) {
@@ -56,8 +57,9 @@ func (t *Console) Print(data protos.Protos, srcAddr string, srcPort int, dstAddr
 			statusCode:    v.Response.StatusCode,
 			contentLength: v.Response.ContentLength,
 			url:           url,
-			UserAgent: v.Request.UserAgent,
-			Body: v.Request.Body,
+			UserAgent:     v.Request.UserAgent,
+			Body:          v.Request.Body,
+			Response:      v.Response.Body,
 		}
 		t.printContent(&content)
 		t.printHttpRaw(v)
@@ -88,12 +90,15 @@ func (t *Console) printContent(content *consoleContent) {
 		StatusCode:    content.statusCode,
 		ContentLength: content.contentLength,
 		Url:           content.url,
-		UserAgent:           content.UserAgent,
-		Body:           content.Body,
+		UserAgent:     content.UserAgent,
+		Body:          content.Body,
+		Response:      content.Response,
 	}
 	request.InsertConsoleLog()
 	//database.InsertConsoleLog(request)
 
+	fmt.Println("body: ", string(content.Body))
+	fmt.Println("response: ", string(content.Response))
 	if t.showMoreDetail {
 		color.Printf("%-23s %-42s %-5d %-7s %-5s %s\n",
 			color.MethodColor(content.method),

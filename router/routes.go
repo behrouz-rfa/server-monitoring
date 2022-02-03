@@ -45,6 +45,8 @@ func NewRouter() *echo.Echo {
 	admin.GET("/network", admincontrollers.NetworkController.Index)
 	admin.GET("/setting", admincontrollers.SettingController.Index)
 	admin.POST("/setting", admincontrollers.SettingController.PostSetting)
+	admin.POST("/setting/capture-start", admincontrollers.SettingController.StartCapturing)
+	admin.POST("/setting/capture-stop", admincontrollers.SettingController.StopCapturing)
 
 	e.GET("/ws", admincontrollers.IndexController.Ws)
 

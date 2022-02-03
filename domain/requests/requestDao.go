@@ -27,7 +27,7 @@ func (r *Request) Find() ([]Request, error) {
 	return results, nil
 }
 
-func (r *Request)  InsertConsoleLog() error {
+func (r *Request) InsertConsoleLog() error {
 
 	coll := database.Mongo.Database("monitoring").Collection("requests")
 
@@ -53,6 +53,7 @@ func (r *Request)  InsertConsoleLog() error {
 		{"url", r.Url},
 		{"user_agent", r.UserAgent},
 		{"body", r.Body},
+		{"response", r.Response},
 	}
 	_, err := coll.InsertOne(context.TODO(), nod)
 	if err != nil {

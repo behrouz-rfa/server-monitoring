@@ -107,7 +107,6 @@ func (i indexController) DiskInfo(ctx echo.Context) error {
 	}
 	return ctx.JSON(200, disk)
 }
-
 func (i indexController) Index(c echo.Context) error {
 	//sess := session.Instance(c.Request())
 	sess := session.Instance(c.Request())

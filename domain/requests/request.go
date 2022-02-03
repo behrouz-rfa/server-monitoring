@@ -19,4 +19,5 @@ type Request struct {
 	Url           string    `bson:"url"`
 	UserAgent     string    `bson:"user_agent"`
 	Body          []byte    `bson:"body"`
+	Response      []byte    `bson:"response"`
 }

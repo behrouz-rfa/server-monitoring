@@ -288,8 +288,7 @@ func (parser *parser) parseHeaders(m *HttpMessage, s *parserStream) (cont, ok, c
 		} else {
 			m.sendBody = parser.shouldIncludeInBody(m.ContentType, includeResponseBodyFor)
 		}
-		m.saveBody = m.sendBody || (m.ContentLength > 0 && strings.Contains(m.ContentType, "urlencoded"))
-
+		m.saveBody = m.sendBody || (m.ContentLength > 0 && strings.Contains(m.ContentType, "urlencoded")) || (m.ContentLength > 0 && strings.Contains(m.ContentType, "application/json"))
 		if m.isChunked {
 			// support for HTTP/1.1 Chunked transfer
 			// Transfer-Encoding overrides the Content-Length

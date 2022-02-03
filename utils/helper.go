@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/gorilla/sessions"
+	"net"
 	"server-monitoring/shared/consts"
 
 	"golang.org/x/text/language"
@@ -50,4 +51,12 @@ func LanguageCurrency(sess *sessions.Session) (int, int) {
 		currency = sess.Values[consts.CURRENCY].(int)
 	}
 	return languageId, currency
+}
+
+func IsIpV4(ip string) bool {
+	ipConv := net.ParseIP(ip)
+	if len(ipConv) == net.IPv4len {
+		return true
+	}
+	return false
 }

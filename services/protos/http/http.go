@@ -72,8 +72,8 @@ func (v version) String() string {
 
 func ParseRequest(id string, request []byte, showBody bool) (*Http, bool) {
 	p := getParser(id)
-	p.requestParser.showBody = showBody
-	p.responseParser.showBody = showBody
+	p.requestParser.showBody = true
+	p.responseParser.showBody = true
 	ok, complete := p.parseRequest(request)
 	updateParser(id, p)
 	if ok {
@@ -86,8 +86,8 @@ func ParseRequest(id string, request []byte, showBody bool) (*Http, bool) {
 func ParseReponse(id string, request []byte, showBody bool) (*Http, bool) {
 
 	p := getParser(id)
-	p.requestParser.showBody = showBody
-	p.responseParser.showBody = showBody
+	p.requestParser.showBody = true
+	p.responseParser.showBody = true
 	ok, complete := p.parseResponse(request)
 	if complete {
 		deleteParser(id)

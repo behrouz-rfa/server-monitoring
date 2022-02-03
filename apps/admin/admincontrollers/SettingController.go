@@ -12,6 +12,7 @@ import (
 	"server-monitoring/shared/passhash"
 	"server-monitoring/shared/session"
 	"server-monitoring/shared/view"
+	"server-monitoring/utils"
 	"strconv"
 )
 
@@ -25,8 +26,30 @@ type settingController struct {
 type settingControllerInterfaces interface {
 	Index(ctx echo.Context) error
 	PostSetting(ctx echo.Context) error
+	StartCapturing(ctx echo.Context) error
+	StopCapturing(ctx echo.Context) error
 }
 
+func (i settingController) StartCapturing(c echo.Context) error {
+	sess := session.Instance(c.Request())
+	sess.Values[consts.STARTCAPTURING] = true
+	//services.StartNew <- true
+	sess.Save(c.Request(), c.Response())
+	sess.AddFlash(view.Flash{Message: "Capture started", Class: view.FlashSuccess})
+	sess.Save(c.Request(), c.Response())
+	i.Index(c)
+	return nil
+}
+func (i settingController) StopCapturing(c echo.Context) error {
+	sess := session.Instance(c.Request())
+	sess.Values[consts.STARTCAPTURING] = false
+	sess.Save(c.Request(), c.Response())
+	//services.Quit <- true
+	sess.AddFlash(view.Flash{Message: "Capture stopped", Class: view.FlashSuccess})
+	sess.Save(c.Request(), c.Response())
+	i.Index(c)
+	return nil
+}
 func (n settingController) Index(c echo.Context) error {
 	sess := session.Instance(c.Request())
 
@@ -56,6 +79,12 @@ func (n settingController) Index(c echo.Context) error {
 	v.Vars["setting"] = setting
 	v.Vars["interfaces"] = interfaces
 	v.Vars["settingid"] = setting.ID.String()
+	if sess.Values[consts.STARTCAPTURING] == nil {
+		v.Vars["isCapture"] = false
+	} else {
+		v.Vars["isCapture"] = sess.Values[consts.STARTCAPTURING].(bool)
+	}
+
 	v.RenderAdmin(c.Response())
 	return nil
 }
@@ -111,8 +140,12 @@ func (s settingController) PostSetting(c echo.Context) error {
 	if runtime.GOOS == "windows" {
 		for _, stat := range interfaces {
 			if stat.Index == iface {
-				setting.Interface = stat.Addrs[0].Addr
-				break
+				for _, addr := range stat.Addrs {
+					if utils.IsIpV4(addr.Addr) {
+						setting.Interface = addr.Addr
+						break
+					}
+				}
 			}
 		}
 

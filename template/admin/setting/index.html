@@ -89,6 +89,10 @@
                             <a class="nav-link active" id="settings_detail_tab" data-toggle="pill"
                                href="#settings_detail">Settings</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="settings_detail_capture" data-toggle="pill"
+                               href="#settings_capture">Capture</a>
+                        </li>
                     </ul>
                 </div><!--end card-body-->
             </div><!--end card-->
@@ -173,6 +177,43 @@
                                                 </button>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--end col-->
+                    </div><!--end row-->
+                </div><!--end settings detail-->
+                <div class="tab-pane fade " id="settings_capture">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-10 mx-auto">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        {{if  .isCapture }}
+                                        <form class="form-horizontal form-material mb-0" method="post" action="setting/capture-start">
+<!--                                            <input type="hidden" value="{{.settingid}}" name="id">-->
+                                            <input type="text" name="csrf" value="{{.csrf_token}}">
+
+                                            <div class="form-group">
+
+                                                <button class="btn btn-gradient-primary btn-sm text-light px-4 mt-3 float-right mb-0">
+                                                    Start Capture
+                                                </button>
+                                            </div>
+                                        </form>
+                                        {{else}}
+                                        <form class="form-horizontal form-material mb-0" method="post" action="setting/capture-stop">
+                                            <!--                                            <input type="hidden" value="{{.settingid}}" name="id">-->
+                                            <input type="text" name="csrf" value="{{.csrf_token}}">
+
+                                            <div class="form-group">
+
+                                                <button class="btn btn-gradient-primary btn-sm text-light px-4 mt-3 float-right mb-0">
+                                                    Stop Capture
+                                                </button>
+                                            </div>
+                                        </form>
+                                        {{end}}
                                     </div>
                                 </div>
                             </div>

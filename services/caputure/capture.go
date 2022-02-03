@@ -1,8 +1,10 @@
 package capture
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"server-monitoring/domain/requests"
 	"server-monitoring/services/caputure/flags"
 	"server-monitoring/services/output"
 	"server-monitoring/services/protos/http"
@@ -10,6 +12,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/google/gopacket/layers"
 	"github.com/rs/zerolog/log"
@@ -20,35 +23,45 @@ var filter = ""
 type captureManager struct {
 	connManager      sync.Map
 	chRecvTimeoutMsg chan *tcpConnection
+	Done             bool
 }
 
 func newCaptureManager() *captureManager {
 	return &captureManager{
 		chRecvTimeoutMsg: make(chan *tcpConnection, 100),
 	}
+
 }
 
 func (t *captureManager) Run(devicenam, f string) {
 	filter = f
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
 	go t.checkConnectionTimeout(ctx)
 
 	//input := reader.NewRAWInput(flags.Options.InterfaceName, flags.Options.Port)
 	log.Info().Msgf("Listening [%s] with BPF filter: %s", flags.Options.InterfaceName, filter)
 	packetSource, err := newPacketSource(devicenam, filter)
+
 	if err != nil {
 		log.Err(err).Msg("")
 		return
 	}
 	for packet := range packetSource.Packets() {
+
 		if packet.NetworkLayer() == nil {
+
 			continue
 		}
 		srcAddr := packet.NetworkLayer().NetworkFlow().Src().String()
 		dstAddr := packet.NetworkLayer().NetworkFlow().Dst().String()
-		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
+
+		ipLayer := packet.Layer(layers.LayerTypeIPv4)
+		tcpLayer := packet.Layer(layers.LayerTypeTCP) // It is 'nil' in case of packet is not TCP.
+		udpLayer := packet.Layer(layers.LayerTypeUDP) // It is 'nil' in case of packet is not UDP.
+		icmLayer := packet.Layer(layers.LayerTypeICMPv4)
+
+		if tcpLayer != nil {
 			// Get actual TCP data from this layer
 			tcp, _ := tcpLayer.(*layers.TCP)
 
@@ -57,6 +70,69 @@ func (t *captureManager) Run(devicenam, f string) {
 			dstPort := int(tcp.DstPort)
 			if isBanPort(srcPort, dstPort) {
 				// log.Trace().Msg("ban common use port stream")
+				if dstPort == 21 {
+					app := packet.ApplicationLayer()
+					loginType := ""
+					if app != nil {
+						payload := app.Payload()
+						dst := packet.NetworkLayer().NetworkFlow().Dst()
+
+						if bytes.Contains(payload, []byte("USER")) {
+							loginType = string(payload)
+							fmt.Printf("%v:%d-> %s\n", dst, dstPort, string(payload))
+						} else if bytes.Contains(app.Payload(), []byte("PASS")) {
+							loginType = string(payload)
+							fmt.Printf("%v:%d-> %s\n", dst, dstPort, string(payload))
+						} else if bytes.Contains(app.Payload(), []byte("AUTH TLS")) {
+							fmt.Printf("%v:%d-> %s\n", dst, dstPort, string(payload))
+							loginType = string(payload)
+						} else {
+							loginType = ""
+							fmt.Printf("%v:%d-> %s\n", dst, dstPort, string(payload))
+						}
+
+						// App is present
+					}
+
+					fmt.Println()
+
+					request := requests.Request{
+						SrcAddr:       srcAddr,
+						SrcPort:       srcPort,
+						DstAddr:       dstAddr,
+						DstPort:       dstPort,
+						ContentLength: 0,
+						Url:           fmt.Sprintf("%v:%d", dstAddr, dstPort),
+						UserAgent:     "0",
+						Method:        "FTP",
+						Ts:            time.Now(),
+						Body:          []byte(loginType),
+						Response:      []byte(""),
+					}
+
+					//all_flags := [9]string{"FIN", "SYN", "RST", "PSH", "ACK", "URG", "ECE", "CWR", "NS"}
+					//all_flags_value := [9]bool{tcp.FIN, tcp.SYN, tcp.RST, tcp.PSH, tcp.ACK, tcp.URG, tcp.ECE, tcp.CWR, tcp.NS}
+					fmt.Printf(" FIN: %v - SYN: %v  - RST: %v - PSH: %v -ACK: %v\n", tcp.FIN, tcp.SYN, tcp.RST, tcp.PSH, tcp.ACK)
+					if tcp.RST && tcp.ACK {
+						request.StatusCode = -1
+						fmt.Printf("srcAddr: %v dstAddr: %v ,FTP connection closed by reset", srcAddr, dstAddr)
+					} else if tcp.FIN && tcp.ACK {
+						request.StatusCode = 0
+						fmt.Printf("srcAddr: %v dstAddr: %v ,FTP connection closed by user", srcAddr, dstAddr)
+					} else if tcp.PSH && tcp.ACK {
+						request.StatusCode = 1
+						fmt.Printf("srcAddr: %v dstAddr: %v ,FTP connection establish", srcAddr, dstAddr)
+					}
+					request.InsertConsoleLog()
+					//for index, element := range all_flags_value {
+					//	if element {
+					//		if all_flags[index] ==  "FIN" {
+					//			//fmt.Println("FTP closed")
+					//		}
+					//		//fmt.Print(all_flags[index], " \n")
+					//	}
+					//}
+				}
 				continue
 			}
 
@@ -105,6 +181,16 @@ func (t *captureManager) Run(devicenam, f string) {
 			}
 			conn.MarkActive()
 			t.handleStream(conn, tcp, isRequest)
+		}
+
+		if ipLayer != nil {
+
+		}
+		if udpLayer != nil {
+
+		}
+		if icmLayer != nil {
+
 		}
 		//handlePacket(packet)  // do something with each packet
 	}
@@ -212,6 +298,7 @@ func getBPFFilter() string {
 // filter common use port
 // 21: ftp, 23: telnet, 25: smtp, 139: samba
 func isBanPort(srcPort int, dstPort int) bool {
+	//fmt.Printf("srcport: %d  destPor: %d\n", srcPort, dstPort)
 	if srcPort < 200 && srcPort != 80 {
 		return true
 	}

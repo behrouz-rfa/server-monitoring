@@ -147,6 +147,7 @@ func Connect(d Info) {
 		}
 		if err := db.CreateCollection(ctx, "settings"); err != nil {
 			fmt.Println(err)
+
 		} else {
 			_, _ = db.Collection("settings").Indexes().CreateOne(
 				context.Background(),
@@ -169,7 +170,7 @@ func Connect(d Info) {
 				{"tel", ""},
 				{"phone", ""},
 				{"interface", ""},
-				{"filter", "port 80"},
+				{"filter", ""},
 				{"status", 1},
 				{"is_super_admin", 1},
 			}

@@ -31,6 +31,7 @@ func newPacketSource(device string, bpf string) (*gopacket.PacketSource, error) 
 	} else {
 		return gopacket.NewPacketSource(handle, handle.LinkType()), nil
 	}
+
 }
 
 func getDeviceId(device string) (string, error) {
