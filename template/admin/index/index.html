@@ -150,7 +150,46 @@
                     </div>
                 </div><!--end card-body-->
             </div><!--end card-->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mt-0 mb-3">Traffic Sources</h4>
+                    <div class="table-responsive browser_users" table-responsive>
+                        <table class="table mb-0" style="direction: ltr !important;">
+                            <thead class="thead-light">
+                            <tr>
+                                <th class="border-top-0">Url</th>
+                                <th class="border-top-0">SrcAddr</th>
+                                <th class="border-top-0">SrcPort</th>
+                                <th class="border-top-0">DstAddr</th>
+                                <th class="border-top-0">DstPort</th>
+                                <th class="border-top-0">Ts</th>
+                                <th class="border-top-0">Method</th>
+                                <th class="border-top-0">StatusCode</th>
+                                <th class="border-top-0">ContentLength</th>
+                                <th class="border-top-0">Action</th>
+                            </tr><!--end tr-->
+                            </thead>
+                            <tbody>
+                            {{range $idx, $e := .requests}}
+                            <tr>
+                                <td><a href="" class="text-primary">{{$e.Url}}</a></td>
+                                <td>{{$e.SrcAddr}}</td>
+                                <td>{{$e.SrcPort}}</td>
+                                <td>{{$e.DstAddr}}</td>
+                                <td>{{$e.DstPort}}</td>
+                                <td>{{$e.Ts}}</td>
+                                <td>{{$e.Method}}</td>
+                                <td>{{$e.StatusCode}}</td>
+                                <td>{{$e.ContentLength}}</td>
+                                <td><a class="btn btn-danger" href="admin/block?ip={{$e.SrcAddr}}">Block</a></td>
 
+                            </tr><!--end tr-->
+                            {{end}}
+                            </tbody>
+                        </table> <!--end table-->
+                    </div><!--end /div-->
+                </div><!--end card-body-->
+            </div><!--end card-->
         </div><!--end col-->
         <div class="col-lg-4">
             <div class="card">
@@ -211,46 +250,6 @@
 
     <div class="row">
 
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title mt-0 mb-3">Traffic Sources</h4>
-                    <div class="table-responsive browser_users">
-                        <table class="table mb-0" style="direction: ltr !important;">
-                            <thead class="thead-light">
-                            <tr>
-                                <th class="border-top-0">Url</th>
-                                <th class="border-top-0">SrcAddr</th>
-                                <th class="border-top-0">SrcPort</th>
-                                <th class="border-top-0">DstAddr</th>
-                                <th class="border-top-0">DstPort</th>
-                                <th class="border-top-0">Ts</th>
-                                <th class="border-top-0">Method</th>
-                                <th class="border-top-0">StatusCode</th>
-                                <th class="border-top-0">ContentLength</th>
-                            </tr><!--end tr-->
-                            </thead>
-                            <tbody>
-                            {{range $idx, $e := .requests}}
-                            <tr>
-                                <td><a href="" class="text-primary">{{$e.Url}}</a></td>
-                                <td>{{$e.SrcAddr}}</td>
-                                <td>{{$e.SrcPort}}</td>
-                                <td>{{$e.DstAddr}}</td>
-                                <td>{{$e.DstPort}}</td>
-                                <td>{{$e.Ts}}</td>
-                                <td>{{$e.Method}}</td>
-                                <td>{{$e.StatusCode}}</td>
-                                <td>{{$e.ContentLength}}</td>
-
-                            </tr><!--end tr-->
-                            {{end}}
-                            </tbody>
-                        </table> <!--end table-->
-                    </div><!--end /div-->
-                </div><!--end card-body-->
-            </div><!--end card-->
-        </div><!--end col-->
     </div><!--end row-->
 
 </div><!-- container -->

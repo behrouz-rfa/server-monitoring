@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
+	"log"
 	"net/http"
 	"server-monitoring/apps/admin/adminservice"
 	"server-monitoring/shared/consts"
@@ -25,12 +26,24 @@ type indexControllerInterfaces interface {
 	DiskInfo(ctx echo.Context) error
 	CpuInfo(ctx echo.Context) error
 	CpuMemory(ctx echo.Context) error
+	Block(ctx echo.Context) error
 }
 
 var (
 	upgrader = websocket.Upgrader{}
 )
 
+func (i indexController) Block(ctx echo.Context) error {
+
+	name := ctx.QueryParam("ip")
+	if mssg, err := adminservice.IpTableService.BlockIP(name); err != nil {
+		log.Fatalln(err)
+		return err
+	} else {
+		return ctx.JSON(200, mssg)
+	}
+
+}
 func (i indexController) Ws(ctx echo.Context) error {
 
 	hub := adminservice.NewHub()
