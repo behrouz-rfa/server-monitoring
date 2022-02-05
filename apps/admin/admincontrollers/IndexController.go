@@ -135,7 +135,7 @@ func (i indexController) Index(c echo.Context) error {
 	v := view.New(c.Request())
 	v.Name = "admin/index/index"
 	v.Vars["URL"] = "/admin"
-	requests, err := adminservice.HomeServices.LoadRequests()
+	requests, err := adminservice.HomeServices.LoadRequests(1)
 	//
 	disk, err := adminservice.HomeServices.DiskInfo()
 	host, err := adminservice.HomeServices.HostInfo()

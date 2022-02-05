@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports: [ "8081:8081" ]
+#    depends_on:
+#      - 'mongo'
+    environment:
+      - MONGODB_URI:mongodb://localhost:27017
+    command: >
+      sh -c "apt-get update && apt-get install-y libpcap-dev
+      && go mod download && go mod verify
+      "
+#    networks:
+#      service1_net:
+#        ipv4_address: 192.168.42.140
+  # MongoDB
+  mongo:
+    image: 'mongo:latest'
+    container_name: mongo_db2
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongodata:/data/db
+    restart: always
+
+#networks:
+#  service1_net:
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 192.168.42.0/24

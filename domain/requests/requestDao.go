@@ -3,13 +3,19 @@ package requests
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"server-monitoring/shared/database"
 	loogers "server-monitoring/utils/looger"
 )
 
-func (r *Request) Find() ([]Request, error) {
+var limit int64 = 20
+
+func (r *Request) Find(page int) ([]Request, error) {
 	var results []Request
-	cur, err := database.Mongo.Database("monitoring").Collection("requests").Find(context.Background(), bson.D{{}})
+	l := int64(limit)
+	skip := int64(int64(page)*limit - limit)
+	fOpt := options.FindOptions{Limit: &l, Skip: &skip}
+	cur, err := database.Mongo.Database("monitoring").Collection("requests").Find(context.Background(), bson.D{{}}, &fOpt)
 	if err != nil {
 		return results, err
 	}
@@ -25,6 +31,69 @@ func (r *Request) Find() ([]Request, error) {
 	}
 
 	return results, nil
+}
+
+func (r *Request) FindByKey(page int, key string) ([]Request, error) {
+
+	var results []Request
+	l := int64(limit)
+	skip := int64(int64(page)*limit - limit)
+	fOpt := options.FindOptions{Limit: &l, Skip: &skip}
+	query := filter(key)
+	cur, err := database.Mongo.Database("monitoring").Collection("requests").Find(context.Background(), query, &fOpt)
+	if err != nil {
+		return results, err
+	}
+
+	for cur.Next(context.TODO()) {
+		var elem Request
+		err := cur.Decode(&elem)
+		if err != nil {
+			continue
+		}
+
+		results = append(results, elem)
+	}
+
+	return results, nil
+
+	//
+	//ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	//var results []Request
+	////l := int64(limit)
+	////skip := int64(int64(page)*limit - limit)
+	////fOpt := options.FindOptions{Limit: &l, Skip: &skip}
+	//
+	//
+	//pipeline := mongo.Pipeline{
+	//	{
+	//		{"$match", bson.D{
+	//			{"method", key},
+	//		}},
+	//	},
+	//	{
+	//		{"$sort", bson.D{
+	//			{"ts", 1},
+	//		}},
+	//	},
+	//}
+	//
+	//cur, err := database.Mongo.Database("monitoring").Collection("requests").Aggregate(ctx, pipeline)
+	//if err != nil {
+	//	return results, err
+	//}
+	//
+	//for cur.Next(ctx) {
+	//	var elem Request
+	//	err := cur.Decode(&elem)
+	//	if err != nil {
+	//		continue
+	//	}
+	//
+	//	results = append(results, elem)
+	//}
+	//
+	//return results, nil
 }
 
 func (r *Request) InsertConsoleLog() error {
@@ -76,4 +145,16 @@ func (r *Request) InsertConsoleLog() error {
 	//}
 
 	return nil
+}
+func filter(skill string) bson.D {
+	return bson.D{{
+		"method",
+		bson.D{{
+			"$regex",
+			"^" + skill + ".*$",
+		}, {
+			"$options",
+			"i",
+		}},
+	}}
 }

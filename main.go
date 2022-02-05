@@ -36,6 +36,10 @@ func main() {
 	// Configure the session cookie store
 	session.Configure(config.Session)
 
+	//if os.Getenv("MONGODB_URI") != "" {
+	//	config.Database.MongoDB.Database = os.Getenv("MONGODB_URI")
+	//}
+
 	// Connect to database
 	database.Connect(config.Database)
 

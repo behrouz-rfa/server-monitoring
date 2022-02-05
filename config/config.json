@@ -5,7 +5,7 @@
       "Path": "gowebapp.db"
     },
     "MongoDB": {
-      "URL": "mongodb://localhost:27017",
+      "URL": "mongodb://192.168.42.133:27017",
       "Database": "monitoring"
     },
     "MySQL": {

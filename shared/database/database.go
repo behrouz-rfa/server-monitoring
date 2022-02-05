@@ -141,6 +141,14 @@ func Connect(d Info) {
 		}
 		if err := db.CreateCollection(ctx, "requests"); err != nil {
 			fmt.Println(err)
+		} else {
+			_, _ = db.Collection("requests").Indexes().CreateOne(
+				context.Background(),
+				mongo.IndexModel{
+					Keys: bson.D{{Key: "method", Value: 1}},
+				},
+			)
+
 		}
 		if err := db.CreateCollection(ctx, "nodes"); err != nil {
 			fmt.Println(err)
@@ -149,13 +157,6 @@ func Connect(d Info) {
 			fmt.Println(err)
 
 		} else {
-			_, _ = db.Collection("settings").Indexes().CreateOne(
-				context.Background(),
-				mongo.IndexModel{
-					Keys:    bson.D{{Key: "username", Value: 1}},
-					Options: options.Index().SetUnique(true),
-				},
-			)
 
 			hash, _ := passhash.HashString("123456")
 			setting := bson.D{

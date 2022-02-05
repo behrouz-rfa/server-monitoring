@@ -1,33 +1,34 @@
 FROM golang:1.16.4
 
-ENV APP_USER app
-ENV APP_HOME /go/src/mathapp
+#ENV APP_USER app
+ENV APP_HOME /go/src/server-monitoring
 
-RUN groupadd $APP_USER && useradd -m -g $APP_USER -l $APP_USER
-RUN mkdir -p $APP_HOME && chown -R $APP_USER:$APP_USER $APP_HOME
+#RUN groupadd $APP_USER && useradd -m -g $APP_USER -l $APP_USER
+#RUN mkdir -p $APP_HOME && chown -R $APP_USER:$APP_USER $APP_HOME
+RUN apt-get update && apt-get install -y libpcap-dev
 
 WORKDIR $APP_HOME
-USER $APP_USER
-COPY src/ .
+#USER $APP_USER
+COPY . .
 
 RUN go mod download
 RUN go mod verify
 RUN go build -o mathapp
 
 # FROM debian:buster
-FROM registry.semaphoreci.com/golang:1.16.4
+#FROM registry.semaphoreci.com/golang:1.16.4
+#
+#ENV APP_USER app
+#ENV APP_HOME /go/src/mathapp
 
-ENV APP_USER app
-ENV APP_HOME /go/src/mathapp
+#RUN groupadd $APP_USER && useradd -m -g $APP_USER -l $APP_USER
+#RUN mkdir -p $APP_HOME
+#WORKDIR $APP_HOME
+#
+#COPY src/config/ config/
+#COPY src/template/ template/
+#COPY --chown=0:0 --from=builder $APP_HOME/mathapp $APP_HOME
 
-RUN groupadd $APP_USER && useradd -m -g $APP_USER -l $APP_USER
-RUN mkdir -p $APP_HOME
-WORKDIR $APP_HOME
-
-COPY src/config/ config/
-COPY src/template/ template/
-COPY --chown=0:0 --from=builder $APP_HOME/mathapp $APP_HOME
-
-EXPOSE 8010
-USER $APP_USER
+EXPOSE 8081
+#USER $APP_USER
 CMD ["./mathapp"]

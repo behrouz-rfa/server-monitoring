@@ -17,7 +17,8 @@ var (
 )
 
 type homeServicesInterface interface {
-	LoadRequests() ([]requests.Request, error)
+	LoadRequests(int) ([]requests.Request, error)
+	LoadRequestsFilter(int, string) ([]requests.Request, error)
 	CpuInfo() (int, error)
 	MemoryInfo() (mem.VirtualMemoryStat, error)
 	HostInfo() (host.InfoStat, error)
@@ -88,7 +89,14 @@ func (h homeService) CpuInfo() (int, error) {
 
 }
 
-func (h homeService) LoadRequests() ([]requests.Request, error) {
+func (h homeService) LoadRequests(page int) ([]requests.Request, error) {
 	var r requests.Request
-	return r.Find()
+	return r.Find(page)
+}
+func (h homeService) LoadRequestsFilter(page int, key string) ([]requests.Request, error) {
+	var r requests.Request
+	if len(key) == 0 {
+		return r.Find(page)
+	}
+	return r.FindByKey(page, key)
 }
