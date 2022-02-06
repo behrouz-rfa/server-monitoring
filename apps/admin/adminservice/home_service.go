@@ -98,5 +98,5 @@ func (h homeService) LoadRequestsFilter(page int, key string) ([]requests.Reques
 	if len(key) == 0 {
 		return r.Find(page)
 	}
-	return r.FindByKey(page, key)
+	return r.FinMultipleFilter(page, key)
 }

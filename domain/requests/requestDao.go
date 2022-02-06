@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"server-monitoring/shared/database"
 	loogers "server-monitoring/utils/looger"
+	"time"
 )
 
 var limit int64 = 20
@@ -56,19 +57,21 @@ func (r *Request) FindByKey(page int, key string) ([]Request, error) {
 	}
 
 	return results, nil
+}
+func (r *Request) FinMultipleFilter(page int, key string) ([]Request, error) {
 
-	//
-	//ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	//var results []Request
-	////l := int64(limit)
-	////skip := int64(int64(page)*limit - limit)
-	////fOpt := options.FindOptions{Limit: &l, Skip: &skip}
-	//
-	//
+	ctx, _ := context.WithTimeout(context.TODO(), 30*time.Second)
+	var results []Request
+	//l := int64(limit)
+	//skip := int64(int64(page)*limit - limit)
+	//fOpt := options.FindOptions{Limit: &l, Skip: &skip}
+	filter := bson.D{{"src_port", bson.D{{"$lte", 100}}}}
+	cur, err := database.Mongo.Database("monitoring").Collection("requests").Find(ctx, filter)
+
 	//pipeline := mongo.Pipeline{
 	//	{
 	//		{"$match", bson.D{
-	//			{"method", key},
+	//			{"src_port", bson.D{{"$lte",22}}},
 	//		}},
 	//	},
 	//	{
@@ -79,21 +82,21 @@ func (r *Request) FindByKey(page int, key string) ([]Request, error) {
 	//}
 	//
 	//cur, err := database.Mongo.Database("monitoring").Collection("requests").Aggregate(ctx, pipeline)
-	//if err != nil {
-	//	return results, err
-	//}
-	//
-	//for cur.Next(ctx) {
-	//	var elem Request
-	//	err := cur.Decode(&elem)
-	//	if err != nil {
-	//		continue
-	//	}
-	//
-	//	results = append(results, elem)
-	//}
-	//
-	//return results, nil
+	if err != nil {
+		return results, err
+	}
+
+	for cur.Next(ctx) {
+		var elem Request
+		err := cur.Decode(&elem)
+		if err != nil {
+			continue
+		}
+
+		results = append(results, elem)
+	}
+
+	return results, nil
 }
 
 func (r *Request) InsertConsoleLog() error {

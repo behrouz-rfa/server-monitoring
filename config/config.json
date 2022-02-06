@@ -5,7 +5,7 @@
       "Path": "gowebapp.db"
     },
     "MongoDB": {
-      "URL": "mongodb://192.168.42.133:27017",
+      "URL": "mongodb://192.168.1.42:27017,192.168.42.133:27017/?replicaSet=rp01",
       "Database": "monitoring"
     },
     "MySQL": {

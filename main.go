@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"server-monitoring/router"
 	"server-monitoring/services"
+	"server-monitoring/services/mongoservices"
 	"server-monitoring/shared/database"
 	"server-monitoring/shared/email"
 	"server-monitoring/shared/recaptcha"
@@ -70,6 +71,7 @@ func main() {
 	////})
 	//c.AddFunc("@hourly", func() { fmt.Println("Every hour") })
 	//c.Start()
+
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
@@ -81,6 +83,10 @@ func main() {
 		defer wg.Done()
 		//http_log.Run()
 		services.Run()
+	}()
+	wg.Add(1)
+	go func() {
+		mongoservices.Run()
 	}()
 	wg.Wait()
 }
