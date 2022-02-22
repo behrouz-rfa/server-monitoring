@@ -18,6 +18,8 @@ type IpTableServiceInterface interface {
 	UnblockIp(string) error
 }
 
+// run os command for blokgin ip
+//base on OS
 func (i ipTableService) BlockIP(s string) (string, error) {
 
 	if runtime.GOOS == "windows" {
@@ -40,6 +42,7 @@ func (i ipTableService) BlockIP(s string) (string, error) {
 	return fmt.Sprintf("%s", out), err
 }
 
+// unlbloc ip base on OS
 func (i ipTableService) UnblockIp(s string) error {
 	panic("implement me")
 }

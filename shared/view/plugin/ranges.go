@@ -5,6 +5,7 @@ import (
 	"html/template"
 )
 
+//create range of int
 func Ranges() template.FuncMap {
 	f := make(template.FuncMap)
 
@@ -18,6 +19,8 @@ func Ranges() template.FuncMap {
 
 	return f
 }
+
+//increment int
 func Add() template.FuncMap {
 	f := make(template.FuncMap)
 
@@ -29,6 +32,7 @@ func Add() template.FuncMap {
 	return f
 }
 
+//Change uint64 to GB
 func GB() template.FuncMap {
 	f := make(template.FuncMap)
 
@@ -39,6 +43,8 @@ func GB() template.FuncMap {
 
 	return f
 }
+
+//Call culte uptame base on unix time
 func Uptime() template.FuncMap {
 	f := make(template.FuncMap)
 

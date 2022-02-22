@@ -35,6 +35,7 @@ type consoleContent struct {
 	Response      []byte
 }
 
+//prin on conlos filter the on base console content
 func (t *Console) Print(data protos.Protos, srcAddr string, srcPort int, dstAddr string, dstPort int) {
 	t.printHeaderDescription()
 	switch v := data.(type) {

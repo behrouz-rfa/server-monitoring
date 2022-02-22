@@ -10,6 +10,8 @@ import (
 	"server-monitoring/shared/database"
 )
 
+// this is test for watch request on
+// mongo db
 func Run() {
 	coll := database.Mongo.Database("monitoring").Collection("requests")
 	pipLine := mongo.Pipeline{bson.D{{"$match", bson.D{{"operationType", "insert"}}}}}

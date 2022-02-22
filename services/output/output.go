@@ -4,8 +4,6 @@ import (
 	"server-monitoring/services/caputure/flags"
 	"server-monitoring/services/protos"
 	"strings"
-
-
 )
 
 type OutputPrinter interface {
@@ -14,6 +12,7 @@ type OutputPrinter interface {
 
 var printer []OutputPrinter
 
+//create Conole and default setting for prrit dta
 func Init() {
 	printer = []OutputPrinter{
 		&Console{
@@ -24,6 +23,7 @@ func Init() {
 	}
 }
 
+//prin t
 func Print(data protos.Protos, srcAddr string, srcPort int, dstAddr string, dstPort int) {
 	// filter by keyword
 	if flags.Options.Keyword != "" && !strings.Contains(data.GetSearchKey(), flags.Options.Keyword) {

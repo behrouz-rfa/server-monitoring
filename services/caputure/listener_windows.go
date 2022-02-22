@@ -10,6 +10,7 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
+//start live capture base on device on OS
 func newPacketSource(device string, bpf string) (*gopacket.PacketSource, error) {
 	if device == "" || device == "any" {
 		return nil, fmt.Errorf("Windows not support listen to all interface. Please use (-i) to specific an interface")
@@ -34,6 +35,7 @@ func newPacketSource(device string, bpf string) (*gopacket.PacketSource, error) 
 
 }
 
+// get device id
 func getDeviceId(device string) (string, error) {
 	devices, err := pcap.FindAllDevs()
 	if err != nil {

@@ -71,15 +71,6 @@ func (h homeService) MemoryInfo() (mem.VirtualMemoryStat, error) {
 }
 
 func (h homeService) CpuInfo() (int, error) {
-
-	//cpuInfos, err := cpu.Info()
-	//if err != nil {
-	//	//fmt.Printf("get cpu info failed, err:%v", err)
-	//}
-	//for _ := range cpuInfos {
-	//	//fmt.Println(ci)
-	//}
-	//CPU utilization
 	percent, _ := cpu.Percent(time.Second, false)
 	var usage float64
 	for _, f := range percent {

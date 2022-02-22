@@ -34,6 +34,7 @@ func ColorStart(color uint8) string {
 	return fmt.Sprintf("\033[%dm", color)
 }
 
+//get color base on Method request
 func MethodColor(method string) uint8 {
 	switch method {
 	case "GET":

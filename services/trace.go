@@ -21,13 +21,16 @@ var (
 	devFound = false
 )
 
+// start caputur network
 func Run() {
+	//find all devices
 	devices, err := pcap.FindAllDevs()
 	if err != nil {
 		log.Panicln(err)
 	}
 	//IPAddress := net.ParseIP("192.168.1.42")
 	devuceName := ""
+	//check os is windows
 	if runtime.GOOS == "windows" {
 		fmt.Println("Hello from Windows")
 		if len(devices) > 0 {
@@ -44,27 +47,13 @@ func Run() {
 		}
 	}
 
-	//
-	//handle ,err := pcap.OpenLive(devuceName,snaplan,promisc,timeout)
-	//if err != nil {
-	//	log.Println(err)
-	//}
-	//defer handle.Close()
-	//if err := handle.SetBPFFilter(filter); err != nil {
-	//	log.Println(err)
-	//}
-	//
-	//sourec := gopacket.NewPacketSource(handle,handle.LinkType())
-	//
-	//for packet := range sourec.Packets() {
-	//	fmt.Println(packet.String())
-	//}
-	//packet.Run()
+	//**get interfqce from database on setting collection
 	var setting settings.Setting
 	adminservice.SettingService.Get(&setting)
 	if len(setting.Interface) == 0 {
 		setting.Interface = devuceName
 	}
+	//
 	output.Init()
 	capture.Start(setting.Interface, setting.Filter)
 	//httass.Run(devuceName)

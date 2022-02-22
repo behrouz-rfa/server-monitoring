@@ -24,6 +24,7 @@ var (
 	upgrader = websocket.Upgrader{}
 )
 
+// cpu and memmory and return as json
 func (i indexController) CpuMemory(ctx echo.Context) error {
 	value, err := adminservice.HomeServices.CpuInfo()
 	memory, err := adminservice.HomeServices.MemoryInfo()
@@ -36,6 +37,9 @@ func (i indexController) CpuMemory(ctx echo.Context) error {
 
 	return ctx.JSON(200, items)
 }
+
+//get cpu info
+//return json
 func (i indexController) CpuInfo(ctx echo.Context) error {
 	value, err := adminservice.HomeServices.CpuInfo()
 	if err != nil {
@@ -43,6 +47,9 @@ func (i indexController) CpuInfo(ctx echo.Context) error {
 	}
 	return ctx.JSON(200, value)
 }
+
+//get MemoryInfo info
+//return json
 func (i indexController) MemoryInfo(ctx echo.Context) error {
 	memory, err := adminservice.HomeServices.MemoryInfo()
 	if err != nil {
@@ -50,6 +57,9 @@ func (i indexController) MemoryInfo(ctx echo.Context) error {
 	}
 	return ctx.JSON(200, memory)
 }
+
+//get DIskInfo info
+//return json
 func (i indexController) DiskInfo(ctx echo.Context) error {
 	disk, err := adminservice.HomeServices.DiskInfo()
 	if err != nil {

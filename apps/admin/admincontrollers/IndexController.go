@@ -33,8 +33,8 @@ var (
 	upgrader = websocket.Upgrader{}
 )
 
+//this rout fro blocking ip
 func (i indexController) Block(ctx echo.Context) error {
-
 	name := ctx.QueryParam("ip")
 	if mssg, err := adminservice.IpTableService.BlockIP(name); err != nil {
 		log.Fatalln(err)
@@ -44,49 +44,17 @@ func (i indexController) Block(ctx echo.Context) error {
 	}
 
 }
-func (i indexController) Ws(ctx echo.Context) error {
 
+//start web socket rouyte and call from javascript
+func (i indexController) Ws(ctx echo.Context) error {
 	hub := adminservice.NewHub()
 	go hub.Run()
 	adminservice.ServeWs(hub, ctx.Response(), ctx.Request())
-	//ws, err := upgrader.Upgrade(ctx.Response(), ctx.Request(), nil)
-	//if err != nil {
-	//	return err
-	//}
-	//defer ws.Close()
-	//
-	//for {
-	//	// Write
-	//
-	//	//adminservice.HomeServices.NetInfo()
-	//
-	//	go func() {
-	//		info, _ := net.IOCounters(true)
-	//		for index, v := range info {
-	//			fmt.Printf("%v:%v send:%v recv:%v\n", index, v, v.BytesSent, v.BytesRecv)
-	//			err := ws.WriteMessage(websocket.TextMessage, passhash.Serialize(v))
-	//
-	//			if err != nil {
-	//				ctx.Logger().Error(err)
-	//			}
-	//		}
-	//	}()
-	//
-	//
-	//
-	//	go func() {
-	//		_, msg, err := ws.ReadMessage()
-	//		if err != nil {
-	//			ctx.Logger().Error(err)
-	//		}
-	//		fmt.Printf("%s\n", msg)
-	//	}()
-	//	// Read
-	//
-	//
-	//}
+
 	return nil
 }
+
+//show CpuMemory on route /admin/CpuMemory
 func (i indexController) CpuMemory(ctx echo.Context) error {
 	value, err := adminservice.HomeServices.CpuInfo()
 	memory, err := adminservice.HomeServices.MemoryInfo()
@@ -99,6 +67,8 @@ func (i indexController) CpuMemory(ctx echo.Context) error {
 
 	return ctx.JSON(200, items)
 }
+
+//show CpuInfo on route /admin/cpu
 func (i indexController) CpuInfo(ctx echo.Context) error {
 	value, err := adminservice.HomeServices.CpuInfo()
 	if err != nil {
@@ -106,6 +76,8 @@ func (i indexController) CpuInfo(ctx echo.Context) error {
 	}
 	return ctx.JSON(200, value)
 }
+
+//show MemoryInfo on route /admin/memory
 func (i indexController) MemoryInfo(ctx echo.Context) error {
 	memory, err := adminservice.HomeServices.MemoryInfo()
 	if err != nil {
@@ -113,6 +85,8 @@ func (i indexController) MemoryInfo(ctx echo.Context) error {
 	}
 	return ctx.JSON(200, memory)
 }
+
+//show disk info on route /admin/disk
 func (i indexController) DiskInfo(ctx echo.Context) error {
 	disk, err := adminservice.HomeServices.DiskInfo()
 	if err != nil {
@@ -120,6 +94,8 @@ func (i indexController) DiskInfo(ctx echo.Context) error {
 	}
 	return ctx.JSON(200, disk)
 }
+
+// index view for show all basic information on dashboeard
 func (i indexController) Index(c echo.Context) error {
 	//sess := session.Instance(c.Request())
 	sess := session.Instance(c.Request())

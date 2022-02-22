@@ -51,6 +51,7 @@ func main() {
 	// Setup the views
 	view.Configure(config.View)
 	view.LoadTemplates(config.Template.Root, config.Template.RootAdmin, config.Template.RootFront, config.Template.Children, config.Template.ChildrenAdmin, config.Template.ChildrenFront)
+	//load all blogin for html paraser on go template
 	view.LoadPlugins(
 		plugin.TagHelper(config.View),
 		plugin.NoEscape(),
@@ -72,6 +73,9 @@ func main() {
 	//c.AddFunc("@hourly", func() { fmt.Println("Every hour") })
 	//c.Start()
 
+	/**
+	run services for api web and monitroring
+	*/
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
